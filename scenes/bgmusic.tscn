@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://dp26gyh0v488o"]
+
+[ext_resource type="AudioStream" uid="uid://cs1gv1dewyjqf" path="res://music-sfx/forest.mp3" id="1_p34rl"]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer"]
+stream = ExtResource("1_p34rl")
+autoplay = true

@@ -15,6 +15,10 @@ run/main_scene="uid://0yyjag5xrrmh"
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Bgmusic="*res://scenes/bgmusic.tscn"
+
 [editor]
 
 movie_writer/movie_file="C:/Users/sahas/Code/tsa-game/footage/test.avi"
