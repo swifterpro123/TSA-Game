@@ -1628,7 +1628,10 @@ repeat_size = Vector2(1444, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="SkyBG/Parallax2D"]
 z_index = -1
-position = Vector2(-578, -678.99994)
+texture_repeat = 3
+position = Vector2(-579, -731)
 scale = Vector2(0.61472976, 0.5341149)
 texture = ExtResource("6_p57ef")
 centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 2349, 1740)

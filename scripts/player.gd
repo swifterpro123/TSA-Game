@@ -8,6 +8,7 @@ var currentjumps = 0
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 var is_slashing: bool = false
 var can_dash: bool = true
+var is_rolling: bool = false
 @onready var dash_cooldown: Timer = $DashCooldown
 
 func _ready() -> void:
@@ -18,6 +19,9 @@ func _on_animation_finished() -> void:
 	if animated_sprite.animation == "slash":
 		is_slashing = false
 		animated_sprite.play('idle')
+	if animated_sprite.animation == "roll":
+		is_rolling = false
+		animated_sprite.play("idle")
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
@@ -29,10 +33,12 @@ func _physics_process(delta: float) -> void:
 	elif Input.is_action_just_pressed("jump") and not is_on_floor() and currentjumps < jumps:
 		velocity.y = JUMP_VELOCITY
 		currentjumps += 1
+		is_rolling = true
+		animated_sprite.play("roll")
 	elif is_on_floor():
 		currentjumps = 0
 
-	if Input.is_action_just_pressed("slash") and not is_slashing:
+	if Input.is_action_just_pressed("slash") and not is_slashing and not is_rolling:
 		is_slashing = true
 		animated_sprite.play("slash")
 
@@ -41,12 +47,15 @@ func _physics_process(delta: float) -> void:
 	if not is_slashing:
 		if direction > 0:
 			animated_sprite.flip_h = true
-			animated_sprite.play("run")
+			if not is_rolling:
+				animated_sprite.play("run")
 		elif direction < 0:
 			animated_sprite.flip_h = false
-			animated_sprite.play("run")
+			if not is_rolling:
+				animated_sprite.play("run")
 		else:
-			animated_sprite.play("idle")
+			if not is_rolling:
+				animated_sprite.play("idle")
 
 	if direction != 0:
 		velocity.x = direction * SPEED
