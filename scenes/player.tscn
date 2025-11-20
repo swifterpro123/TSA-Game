@@ -120,3 +120,6 @@ frame_progress = 1.0
 visible = false
 position = Vector2(-218, 255)
 shape = SubResource("CapsuleShape2D_dqkch")
+
+[node name="DashCooldown" type="Timer" parent="."]
+wait_time = 1.5

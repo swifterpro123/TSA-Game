@@ -2,12 +2,15 @@ extends CharacterBody2D
 
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
-
+const dashcd = 1.5
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 var is_slashing: bool = false
+var can_dash: bool = true
+@onready var dash_cooldown: Timer = $DashCooldown
 
 func _ready() -> void:
 	animated_sprite.animation_finished.connect(Callable(self, "_on_animation_finished"))
+	dash_cooldown.wait_time = dashcd
 
 func _on_animation_finished() -> void:
 	if animated_sprite.animation == "slash":
