@@ -26,7 +26,7 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 		currentjumps += 1
-	elif Input.is_action_just_pressed("jump") and not is_on_floor() and currentjumps < 2:
+	elif Input.is_action_just_pressed("jump") and not is_on_floor() and currentjumps < jumps:
 		velocity.y = JUMP_VELOCITY
 		currentjumps += 1
 	elif is_on_floor():
@@ -36,7 +36,6 @@ func _physics_process(delta: float) -> void:
 		is_slashing = true
 		animated_sprite.play("slash")
 
-	# movement input
 	var direction := Input.get_axis("move_left", "move_right")
 
 	if not is_slashing:
