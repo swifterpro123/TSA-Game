@@ -3,6 +3,8 @@ extends CharacterBody2D
 const SPEED = 300.0
 const JUMP_VELOCITY = -400.0
 const dashcd = 1.5
+const jumps = 2
+var currentjumps = 0
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 var is_slashing: bool = false
 var can_dash: bool = true
@@ -23,6 +25,12 @@ func _physics_process(delta: float) -> void:
 
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
+		currentjumps += 1
+	elif Input.is_action_just_pressed("jump") and not is_on_floor() and currentjumps < 2:
+		velocity.y = JUMP_VELOCITY
+		currentjumps += 1
+	elif is_on_floor():
+		currentjumps = 0
 
 	if Input.is_action_just_pressed("slash") and not is_slashing:
 		is_slashing = true
