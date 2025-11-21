@@ -1,10 +1,11 @@
-[gd_scene load_steps=24 format=3 uid="uid://ollwsdcb478w"]
+[gd_scene load_steps=32 format=3 uid="uid://ollwsdcb478w"]
 
 [ext_resource type="Script" uid="uid://donbc2bnw8ag6" path="res://scripts/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://bjbgyq40x8j27" path="res://sprites/knightanim.png" id="2_g2els"]
 [ext_resource type="Texture2D" uid="uid://daf5etndahgif" path="res://sprites/knightwalk.png" id="3_qhqgy"]
 [ext_resource type="Texture2D" uid="uid://d211rqjjnivpv" path="res://sprites/knightroll.png" id="3_qlg0r"]
 [ext_resource type="Texture2D" uid="uid://jhocqgasw5pd" path="res://sprites/knightslash.png" id="4_dqkch"]
+[ext_resource type="Texture2D" uid="uid://bv7wilbeelner" path="res://sprites/dash.png" id="6_tuyoq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qhqgy"]
 atlas = ExtResource("2_g2els")
@@ -145,6 +146,56 @@ animations = [{
 radius = 15.0
 height = 60.0
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_4r5pv"]
+atlas = ExtResource("6_tuyoq")
+region = Rect2(0, 0, 266, 266)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_60mlk"]
+atlas = ExtResource("6_tuyoq")
+region = Rect2(266, 0, 266, 266)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i4ail"]
+atlas = ExtResource("6_tuyoq")
+region = Rect2(532, 0, 266, 266)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a38lo"]
+atlas = ExtResource("6_tuyoq")
+region = Rect2(798, 0, 266, 266)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4ni07"]
+atlas = ExtResource("6_tuyoq")
+region = Rect2(1064, 0, 266, 266)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l71n6"]
+atlas = ExtResource("6_tuyoq")
+region = Rect2(1330, 0, 266, 266)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ke2ow"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4r5pv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_60mlk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i4ail")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a38lo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4ni07")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l71n6")
+}],
+"loop": false,
+"name": &"default",
+"speed": 12.0
+}]
+
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_g2els")
 
@@ -152,10 +203,8 @@ script = ExtResource("1_g2els")
 position = Vector2(-219.99998, 249)
 scale = Vector2(0.8979653, 1.0098174)
 sprite_frames = SubResource("SpriteFrames_qhqgy")
-animation = &"roll"
+animation = &"slash"
 autoplay = "idle"
-frame = 4
-frame_progress = 0.18205656
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -164,3 +213,12 @@ shape = SubResource("CapsuleShape2D_dqkch")
 
 [node name="DashCooldown" type="Timer" parent="."]
 wait_time = 1.5
+
+[node name="Dash" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(-179, 257)
+scale = Vector2(0.24436091, 0.2631579)
+sprite_frames = SubResource("SpriteFrames_ke2ow")
+frame = 2
+frame_progress = 0.1535757
+flip_h = true
