@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://ollwsdcb478w"]
+[gd_scene load_steps=34 format=3 uid="uid://ollwsdcb478w"]
 
 [ext_resource type="Script" uid="uid://donbc2bnw8ag6" path="res://scripts/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://bjbgyq40x8j27" path="res://sprites/knightanim.png" id="2_g2els"]
@@ -6,6 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://d211rqjjnivpv" path="res://sprites/knightroll.png" id="3_qlg0r"]
 [ext_resource type="Texture2D" uid="uid://jhocqgasw5pd" path="res://sprites/knightslash.png" id="4_dqkch"]
 [ext_resource type="Texture2D" uid="uid://bv7wilbeelner" path="res://sprites/dash.png" id="6_tuyoq"]
+[ext_resource type="AudioStream" uid="uid://cgrx7vvod3u4t" path="res://music-sfx/dashsfx.mp3" id="7_fjrip"]
+[ext_resource type="AudioStream" uid="uid://cjaflf7iu3nwc" path="res://music-sfx/doublejump.mp3" id="8_smehm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qhqgy"]
 atlas = ExtResource("2_g2els")
@@ -193,7 +195,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"default",
-"speed": 12.0
+"speed": 20.0
 }]
 
 [node name="Player" type="CharacterBody2D"]
@@ -216,9 +218,17 @@ wait_time = 1.5
 
 [node name="Dash" type="AnimatedSprite2D" parent="."]
 visible = false
-position = Vector2(-179, 257)
-scale = Vector2(0.24436091, 0.2631579)
+top_level = true
+position = Vector2(-13.375, 255.00002)
+scale = Vector2(1.7020677, 0.46616536)
 sprite_frames = SubResource("SpriteFrames_ke2ow")
-frame = 2
-frame_progress = 0.1535757
+frame = 5
+frame_progress = 1.0
 flip_h = true
+
+[node name="DashSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_fjrip")
+
+[node name="DoubleJumpSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_smehm")
+volume_db = 10.0

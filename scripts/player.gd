@@ -17,19 +17,26 @@ var is_rolling: bool = false
 var is_dashing: bool = false
 var dash_time_remaining: float = 0.0
 @onready var dash_cooldown: Timer = $DashCooldown
+@onready var dash: AnimatedSprite2D = $Dash
+@onready var dash_sound: AudioStreamPlayer2D = $DashSound
+@onready var double_jump_sfx: AudioStreamPlayer2D = $DoubleJumpSFX
 
 func _ready() -> void:
 	animated_sprite.animation_finished.connect(Callable(self, "_on_animation_finished"))
+	dash.animation_finished.connect(Callable(self, "_on_animation_finished"))
 	dash_cooldown.wait_time = dashcd
 	dash_cooldown.timeout.connect(Callable(self, "_on_dash_cooldown_timeout"))
 
 func _on_animation_finished() -> void:
+	if dash.animation == "default":
+		dash.visible = false
 	if animated_sprite.animation == "slash":
 		is_slashing = false
 		animated_sprite.play('idle')
 	if animated_sprite.animation == "roll":
 		is_rolling = false
 		animated_sprite.play("idle")
+	
 
 func _on_dash_cooldown_timeout() -> void:
 	can_dash = true
@@ -44,6 +51,7 @@ func _physics_process(delta: float) -> void:
 		currentjumps += 1
 	elif Input.is_action_just_pressed("jump") and not is_on_floor() and currentjumps < jumps:
 		velocity.y = JUMP_VELOCITY
+		double_jump_sfx.play()
 		currentjumps += 1
 		is_rolling = true
 		animated_sprite.play("roll")
@@ -59,11 +67,23 @@ func _physics_process(delta: float) -> void:
 		dash_cooldown.start()
 		is_dashing = true
 		dash_time_remaining = DASH_TIME
+		if direction > 0:
+			dash.global_position = animated_sprite.global_position - Vector2(1,0)
+			dash.flip_h = false
+			dash.visible = true
+			dash.play("default")
+		elif direction < 0:
+			dash.global_position = animated_sprite.global_position + Vector2(1,0)
+			dash.flip_h = true
+			dash.visible = true
+			dash.play("default")
 		if direction != 0:
 			dashDirection = Vector2(direction, 0)
 		else:
 			dashDirection = Vector2(1, 0) if animated_sprite.flip_h else Vector2(-1, 0)
+		dash_sound.play()
 		velocity = dashDirection.normalized() * DASH_SPEED
+		#>0 = right, 0< = left
 
 	if not is_slashing and not is_dashing:
 		if direction > 0:
