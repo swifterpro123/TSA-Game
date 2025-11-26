@@ -86,12 +86,12 @@ func _physics_process(delta: float) -> void:
 		velocity = dashDirection.normalized() * DASH_SPEED
 		if dashDirection == Vector2(-1,0):
 			dash.global_position = animated_sprite.global_position - Vector2(10,0)
-			dash.flip_h = false
+			dash.flip_h = true
 			dash.visible = true
 			dash.play("default")
 		elif dashDirection == Vector2(1,0):
 			dash.global_position = animated_sprite.global_position + Vector2(10,0)
-			dash.flip_h = true
+			dash.flip_h = false
 			dash.visible = true
 			dash.play("default")
 

@@ -1,0 +1,76 @@
+[gd_scene load_steps=11 format=3 uid="uid://j5e7h5bma302"]
+
+[ext_resource type="Texture2D" uid="uid://qgj1uh3sdl8b" path="res://sprites/drone.png" id="1_7p1mj"]
+[ext_resource type="Script" uid="uid://ykd7o81bhafa" path="res://scripts/drone.gd" id="1_knnud"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0tnpc"]
+atlas = ExtResource("1_7p1mj")
+region = Rect2(0, 0, 1000, 1000)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vtaks"]
+atlas = ExtResource("1_7p1mj")
+region = Rect2(1000, 0, 1000, 1000)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kvpfn"]
+atlas = ExtResource("1_7p1mj")
+region = Rect2(2000, 0, 1000, 1000)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dinhu"]
+atlas = ExtResource("1_7p1mj")
+region = Rect2(3000, 0, 1000, 1000)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kvuet"]
+atlas = ExtResource("1_7p1mj")
+region = Rect2(4000, 0, 1000, 1000)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_trtic"]
+atlas = ExtResource("1_7p1mj")
+region = Rect2(5000, 0, 1000, 1000)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ir15t"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0tnpc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vtaks")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kvpfn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dinhu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kvuet")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_trtic")
+}],
+"loop": true,
+"name": &"Flying",
+"speed": 12.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ca42v"]
+size = Vector2(60.75, 69.5)
+
+[node name="Drone" type="CharacterBody2D"]
+script = ExtResource("1_knnud")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-1, 20)
+scale = Vector2(0.14474997, 0.14474997)
+sprite_frames = SubResource("SpriteFrames_ir15t")
+animation = &"Flying"
+autoplay = "Flying"
+frame_progress = 0.08606302
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.375, 0)
+shape = SubResource("RectangleShape2D_ca42v")
+
+[node name="DirectionTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="DirectionTimer" to="." method="_on_direction_timer_timeout"]
