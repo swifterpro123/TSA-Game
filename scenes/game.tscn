@@ -4340,11 +4340,11 @@ sources/3 = SubResource("TileSetAtlasSource_gee14")
 
 [node name="Game" type="Node2D"]
 
-[node name="Player" parent="." instance=ExtResource("1_uwrxv")]
-position = Vector2(156, -303)
+[node name="YoPlayer" parent="." instance=ExtResource("1_uwrxv")]
+position = Vector2(156, -50)
 
-[node name="Camera2D" type="Camera2D" parent="Player"]
-position = Vector2(-156, 305)
+[node name="Camera2D" type="Camera2D" parent="YoPlayer"]
+position = Vector2(0, 178)
 offset = Vector2(0, -150)
 
 [node name="Layer0" type="TileMapLayer" parent="."]
@@ -4372,7 +4372,7 @@ region_rect = Rect2(0, 0, 2349, 1740)
 [node name="Enemies" type="Node" parent="."]
 
 [node name="Drone" parent="Enemies" instance=ExtResource("8_gee14")]
-position = Vector2(477, -64)
+position = Vector2(365, -90)
 
 [node name="Drone2" parent="Enemies" instance=ExtResource("8_gee14")]
 position = Vector2(1647, -91)

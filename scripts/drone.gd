@@ -1,48 +1,63 @@
 extends CharacterBody2D
-
 class_name DroneEnemy
 
-const speed = 10
-var chase: bool
+const SPEED := 120
+const ROAM_SPEED := 60
+var chase: bool = false
+var health := 80
+var dead := false
+var player: Node2D
+var dir: Vector2 = Vector2.LEFT
+var roaming := true
+var chase_range: float = 200.0
+var stop_distance: float = 30.0  # NEW: Stop this far from player
 
-var health = 80
-var healthMax = 80
-var healthMin = 0
-
-var dead: bool = false
-var takingDamage: bool = false
-#var damage_to_deal = 10 #IF WE WANT HP BAR INSTEAD OF HK LIVES SYSTEM
-var dealingDamage: bool = false
-
-var dir: Vector2
-const gravity = 900
-var knockback = 200
-var roaming: bool = true
-
-func _process(delta: float) -> void:
-	#if !is_on_floor(): #FOR ENEMIES ON THE GROUND
-		#velocity.y += gravity * delta
-		#velocity.x = 0
-	move(delta)
-	move_and_slide()
-
-func move(delta) -> void:
-	if !dead:
-		if !chase:
-			velocity += dir * speed * delta
+func _ready():
+	player = get_tree().get_first_node_in_group("player")
+	if player:
+		print("Player found: ", player.name)
+	else:
+		print("WARNING: No player found!")
+	
+func handle_chase():
+	if player == null:
+		return
+		
+	var distance = global_position.distance_to(player.global_position)
+	
+	if distance <= chase_range:
+		chase = true
+		roaming = false
+		
+		# NEW: Only move if outside stopping distance
+		if distance > stop_distance:
+			dir = (player.global_position - global_position).normalized()
+			velocity = dir * SPEED
+		else:
+			# Stop when close enough
+			velocity = Vector2.ZERO
+	else:
+		chase = false
 		roaming = true
-	elif dead:
-		velocity.x = 0
+		velocity = dir * ROAM_SPEED
 
-func _on_direction_timer_timeout() -> void:
-	var newTime = choose([1.5,2.0,2.5])
-	$DirectionTimer.stop()
-	$DirectionTimer.wait_time = newTime
-	$DirectionTimer.start()
-	if !chase:
-		dir = choose([Vector2.RIGHT, Vector2.LEFT])
-		velocity.x = 0
+func _physics_process(_delta):
+	if dead:
+		velocity = Vector2.ZERO
+		move_and_slide()
+		return
+		
+	handle_chase()
+	move_and_slide()
 
 func choose(array):
 	array.shuffle()
 	return array.front()
+
+func _on_direction_timer_timeout() -> void:
+	var new_time = choose([1.5, 2.0, 2.5])
+	$DirectionTimer.wait_time = new_time
+	$DirectionTimer.start()
+	
+	if roaming and not chase:
+		dir = choose([Vector2.RIGHT, Vector2.LEFT])
