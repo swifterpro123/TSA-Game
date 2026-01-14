@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://j5e7h5bma302"]
+[gd_scene load_steps=12 format=3 uid="uid://j5e7h5bma302"]
 
 [ext_resource type="Texture2D" uid="uid://qgj1uh3sdl8b" path="res://sprites/drone.png" id="1_7p1mj"]
 [ext_resource type="Script" uid="uid://ykd7o81bhafa" path="res://scripts/drone.gd" id="1_knnud"]
@@ -56,7 +56,12 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ca42v"]
 size = Vector2(60.75, 69.5)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_knnud"]
+size = Vector2(78, 83)
+
 [node name="Drone" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 8
 script = ExtResource("1_knnud")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -72,5 +77,11 @@ position = Vector2(0.375, 0)
 shape = SubResource("RectangleShape2D_ca42v")
 
 [node name="DirectionTimer" type="Timer" parent="."]
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("RectangleShape2D_knnud")
 
 [connection signal="timeout" from="DirectionTimer" to="." method="_on_direction_timer_timeout"]

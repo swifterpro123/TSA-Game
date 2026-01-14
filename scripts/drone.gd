@@ -1,63 +1,97 @@
 extends CharacterBody2D
 class_name DroneEnemy
 
-const SPEED := 120
-const ROAM_SPEED := 60
-var chase: bool = false
-var health := 80
-var dead := false
-var player: Node2D
-var dir: Vector2 = Vector2.LEFT
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var hitbox: Area2D = $Hitbox
+
+const SPEED := 120.0
+const ROAM_SPEED := 60.0
+
+var chase := false
 var roaming := true
-var chase_range: float = 200.0
-var stop_distance: float = 30.0  # NEW: Stop this far from player
+var dead := false
+
+var health := 80
+var chase_range := 200.0
+var stop_distance := 30.0
+
+var player: Node2D
+var dir := Vector2.LEFT
+
+var flash_timer := 0.0
+var flash_duration := 0.5
+var flashing := false
+var original_modulate := Color(1, 1, 1, 1)
+
+var smoothing := 6.0
 
 func _ready():
 	player = get_tree().get_first_node_in_group("player")
-	if player:
-		print("Player found: ", player.name)
-	else:
-		print("WARNING: No player found!")
-	
-func handle_chase():
+	hitbox.body_entered.connect(_on_hitbox_body_entered)
+
+func take_damage(amount: int) -> void:
+	if dead:
+		return
+	health -= amount
+	flash_red()
+	if health <= 0:
+		die()
+
+func die():
+	dead = true
+	queue_free()
+
+func flash_red():
+	flash_timer = flash_duration
+	flashing = true
+	sprite.modulate = Color(1, 0, 0, 1)
+
+func _on_hitbox_body_entered(body):
+	if body.is_in_group("player"):
+		body.take_damage(1)
+
+func handle_chase(delta: float):
 	if player == null:
 		return
-		
-	var distance = global_position.distance_to(player.global_position)
-	
+
+	var distance := global_position.distance_to(player.global_position)
+
 	if distance <= chase_range:
 		chase = true
 		roaming = false
-		
-		# NEW: Only move if outside stopping distance
+
 		if distance > stop_distance:
-			dir = (player.global_position - global_position).normalized()
-			velocity = dir * SPEED
+			var desired_velocity := (player.global_position - global_position).normalized() * SPEED
+			velocity = velocity.lerp(desired_velocity, delta * smoothing)
 		else:
-			# Stop when close enough
-			velocity = Vector2.ZERO
+			velocity = velocity.lerp(Vector2.ZERO, delta * smoothing)
 	else:
 		chase = false
 		roaming = true
-		velocity = dir * ROAM_SPEED
+		var roam_velocity := dir * ROAM_SPEED
+		velocity = velocity.lerp(roam_velocity, delta * smoothing)
 
-func _physics_process(_delta):
+func _physics_process(delta):
+	if flashing:
+		flash_timer -= delta
+		if flash_timer <= 0.0:
+			flashing = false
+			sprite.modulate = original_modulate
+		else:
+			sprite.modulate = sprite.modulate.lerp(original_modulate, delta * 5.0)
+
 	if dead:
 		velocity = Vector2.ZERO
 		move_and_slide()
 		return
-		
-	handle_chase()
+
+	handle_chase(delta)
 	move_and_slide()
 
 func choose(array):
 	array.shuffle()
 	return array.front()
 
-func _on_direction_timer_timeout() -> void:
-	var new_time = choose([1.5, 2.0, 2.5])
-	$DirectionTimer.wait_time = new_time
-	$DirectionTimer.start()
-	
+func _on_direction_timer_timeout():
 	if roaming and not chase:
 		dir = choose([Vector2.RIGHT, Vector2.LEFT])

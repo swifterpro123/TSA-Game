@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://0yyjag5xrrmh"]
+[gd_scene load_steps=18 format=4 uid="uid://0yyjag5xrrmh"]
 
 [ext_resource type="PackedScene" uid="uid://ollwsdcb478w" path="res://scenes/player.tscn" id="1_uwrxv"]
 [ext_resource type="Texture2D" uid="uid://qvwj6vyh0rb8" path="res://sprites/grass.png" id="1_yqjtg"]
@@ -8,6 +8,9 @@
 [ext_resource type="Texture2D" uid="uid://daroskuf7tabg" path="res://sprites/tileset.png" id="5_u5sy4"]
 [ext_resource type="Texture2D" uid="uid://b6g6m0s2thqsh" path="res://sprites/skybg.png" id="6_p57ef"]
 [ext_resource type="PackedScene" uid="uid://j5e7h5bma302" path="res://scenes/drone.tscn" id="8_gee14"]
+[ext_resource type="Texture2D" uid="uid://b6h3dqu5emk8q" path="res://sprites/heart.png" id="9_0tnpc"]
+[ext_resource type="Script" uid="uid://dtpkmdu47ok3j" path="res://scenes/lives_ui.gd" id="9_kvpfn"]
+[ext_resource type="Texture2D" uid="uid://d1615owlnstqw" path="res://sprites/brokenheart.png" id="11_dinhu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lnu2h"]
 texture = ExtResource("1_yqjtg")
@@ -4331,7 +4334,8 @@ texture = ExtResource("4_iywne")
 13:12/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_lbhrr"]
-physics_layer_0/collision_layer = 1
+physics_layer_0/collision_layer = 8
+physics_layer_0/collision_mask = 5
 sources/0 = SubResource("TileSetAtlasSource_lnu2h")
 sources/1 = SubResource("TileSetAtlasSource_lbhrr")
 sources/2 = SubResource("TileSetAtlasSource_iywne")
@@ -4385,3 +4389,52 @@ position = Vector2(1981, -150)
 
 [node name="Drone5" parent="Enemies" instance=ExtResource("8_gee14")]
 position = Vector2(2081, -361)
+
+[node name="SpawnPoint" type="Node2D" parent="."]
+position = Vector2(-371, -72)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="DamageFlash" type="ColorRect" parent="CanvasLayer"]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0, 0, 1)
+
+[node name="LivesUI" type="HBoxContainer" parent="CanvasLayer"]
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 1001.0
+offset_bottom = 245.0
+scale = Vector2(0.3, 0.3)
+script = ExtResource("9_kvpfn")
+full_life = ExtResource("9_0tnpc")
+broken_life = ExtResource("11_dinhu")
+
+[node name="Life1" type="TextureRect" parent="CanvasLayer/LivesUI"]
+layout_mode = 2
+texture = ExtResource("9_0tnpc")
+stretch_mode = 5
+
+[node name="Life2" type="TextureRect" parent="CanvasLayer/LivesUI"]
+layout_mode = 2
+texture = ExtResource("9_0tnpc")
+stretch_mode = 5
+
+[node name="Life3" type="TextureRect" parent="CanvasLayer/LivesUI"]
+layout_mode = 2
+texture = ExtResource("9_0tnpc")
+stretch_mode = 5
+
+[node name="Life4" type="TextureRect" parent="CanvasLayer/LivesUI"]
+layout_mode = 2
+texture = ExtResource("9_0tnpc")
+stretch_mode = 5
+
+[node name="Life5" type="TextureRect" parent="CanvasLayer/LivesUI"]
+layout_mode = 2
+texture = ExtResource("9_0tnpc")
+stretch_mode = 5
