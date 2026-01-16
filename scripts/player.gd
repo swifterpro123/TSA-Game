@@ -16,6 +16,8 @@ var lives := MAX_LIVES
 var currentjumps = 0
 var dashDirection = Vector2.ZERO
 
+var is_iframe = false
+
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var dash_cooldown: Timer = $DashCooldown
 @onready var dash: AnimatedSprite2D = $Dash
@@ -52,14 +54,15 @@ func _ready() -> void:
 	lives_changed.emit(lives)
 
 func take_damage(amount := 1) -> void:
-	lives -= amount
-	lives = max(lives, 0)
-	lives_changed.emit(lives)
+	if is_iframe == false:
+		lives -= amount
+		lives = max(lives, 0)
+		lives_changed.emit(lives)
 
-	regen_timer = 0.0
+		regen_timer = 0.0
 
-	flash_timer = flash_duration
-	damage_flash.modulate.a = 1.0
+		flash_timer = flash_duration
+		damage_flash.modulate.a = 1.0
 
 	if lives <= 0:
 		reset_player()
@@ -86,6 +89,7 @@ func update_slash_hitbox():
 
 func _on_dash_sprite_finished() -> void:
 	dash.visible = false
+	is_iframe = false
 	
 func _on_slash_hitbox_body_entered(body):
 	print("HIT:", body.name)
@@ -123,6 +127,7 @@ func _physics_process(delta: float) -> void:
 
 	if Input.is_action_just_pressed("dash") and not is_slashing and not is_rolling and not is_dashing and can_dash:
 		can_dash = false
+		is_iframe = true
 		dash_cooldown.start()
 		is_dashing = true
 		dash_time_remaining = DASH_TIME
