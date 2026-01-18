@@ -174,5 +174,7 @@ func _physics_process(delta: float) -> void:
 			lives = min(lives, MAX_LIVES)
 			lives_changed.emit(lives)
 			regen_timer = 0.0
+			
+
 
 	move_and_slide()
