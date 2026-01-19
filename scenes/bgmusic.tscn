@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://dp26gyh0v488o"]
 
-[ext_resource type="AudioStream" uid="uid://cs1gv1dewyjqf" path="res://music-sfx/forest.mp3" id="1_p34rl"]
 [ext_resource type="Script" uid="uid://c1goo0xta654k" path="res://scripts/bgmusic.gd" id="1_pbe2m"]
+[ext_resource type="AudioStream" uid="uid://tr0hkpyqndt6" path="res://music-sfx/village.mp3" id="2_pbe2m"]
 [ext_resource type="AudioStream" uid="uid://bri4h34x8t07e" path="res://music-sfx/tutorial.mp3" id="2_usvw6"]
 [ext_resource type="AudioStream" uid="uid://ox70588rkpph" path="res://music-sfx/menu.mp3" id="3_pbe2m"]
 
@@ -9,7 +9,7 @@
 script = ExtResource("1_pbe2m")
 
 [node name="Forest" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("1_p34rl")
+stream = ExtResource("2_pbe2m")
 
 [node name="Tutorial" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_usvw6")
