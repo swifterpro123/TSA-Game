@@ -5790,10 +5790,10 @@ Dashing gives iFrames"
 horizontal_alignment = 1
 
 [node name="Checkpoint Text" type="Label" parent="Tutorial Text"]
-offset_left = 4210.0
-offset_top = -172.0
-offset_right = 4483.0
-offset_bottom = -80.0
+offset_left = 4206.0
+offset_top = -178.0
+offset_right = 4479.0
+offset_bottom = -86.0
 theme_override_colors/font_color = Color(0.94817084, 0.946235, 0.95126086, 1)
 theme_override_constants/outline_size = 10
 theme_override_fonts/font = ExtResource("18_5newe")
