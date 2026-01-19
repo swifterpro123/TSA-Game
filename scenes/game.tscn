@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=4 uid="uid://0yyjag5xrrmh"]
+[gd_scene load_steps=32 format=4 uid="uid://0yyjag5xrrmh"]
 
 [ext_resource type="PackedScene" uid="uid://ollwsdcb478w" path="res://scenes/player.tscn" id="1_uwrxv"]
 [ext_resource type="Texture2D" uid="uid://qvwj6vyh0rb8" path="res://sprites/grass.png" id="1_yqjtg"]
@@ -16,7 +16,10 @@
 [ext_resource type="Texture2D" uid="uid://d1615owlnstqw" path="res://sprites/brokenheart.png" id="11_dinhu"]
 [ext_resource type="Texture2D" uid="uid://c5gaub2txkdt5" path="res://sprites/tut bg better.png" id="11_rysoc"]
 [ext_resource type="PackedScene" uid="uid://dxvedhhqymhbx" path="res://scenes/kill_zone.tscn" id="16_ca42v"]
+[ext_resource type="Texture2D" uid="uid://dxiihuhoahyey" path="res://sprites/Title_Screen.png" id="16_ssvqc"]
+[ext_resource type="Script" uid="uid://dp4qcli6mmaaw" path="res://scripts/menu_screen.gd" id="17_1kice"]
 [ext_resource type="Script" uid="uid://c1vchxtx50lcm" path="res://scripts/teleport_zone.gd" id="17_rysoc"]
+[ext_resource type="FontFile" uid="uid://bcxahdqihv3sn" path="res://sprites/SFC Black Krown.ttf" id="18_5newe"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lnu2h"]
 texture = ExtResource("1_yqjtg")
@@ -5522,15 +5525,6 @@ position = Vector2(-371, -72)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="DamageFlash" type="ColorRect" parent="CanvasLayer"]
-modulate = Color(1, 1, 1, 0)
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(1, 0, 0, 1)
-
 [node name="LivesUI" type="HBoxContainer" parent="CanvasLayer"]
 offset_left = 50.0
 offset_top = 50.0
@@ -5565,6 +5559,42 @@ stretch_mode = 5
 layout_mode = 2
 texture = ExtResource("9_0tnpc")
 stretch_mode = 5
+
+[node name="MenuScreen" type="TextureRect" parent="CanvasLayer"]
+offset_left = 3.0
+offset_top = 5.0
+offset_right = 5762.9995
+offset_bottom = 3224.9998
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("16_ssvqc")
+script = ExtResource("17_1kice")
+
+[node name="Label" type="Label" parent="CanvasLayer/MenuScreen"]
+layout_mode = 0
+offset_left = 1380.0
+offset_top = 2090.0
+offset_right = 4420.0
+offset_bottom = 2595.0
+theme_override_colors/font_color = Color(0.7218587, 0.7218587, 0.7218587, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 50
+theme_override_fonts/font = ExtResource("18_5newe")
+theme_override_font_sizes/font_size = 225
+text = "[PRESS ANY KEY TO BEGIN]
+"
+horizontal_alignment = 1
+
+[node name="DamageFlash" type="ColorRect" parent="CanvasLayer"]
+visible = false
+modulate = Color(1, 1, 1, 0)
+z_index = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0, 0, 1)
 
 [node name="KillZone" parent="." instance=ExtResource("16_ca42v")]
 position = Vector2(156, 128)
