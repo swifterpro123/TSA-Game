@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://ollwsdcb478w"]
+[gd_scene load_steps=36 format=3 uid="uid://ollwsdcb478w"]
 
 [ext_resource type="Script" uid="uid://donbc2bnw8ag6" path="res://scripts/player.gd" id="1_g2els"]
 [ext_resource type="Texture2D" uid="uid://bjbgyq40x8j27" path="res://sprites/knightanim.png" id="2_g2els"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://bv7wilbeelner" path="res://sprites/dash.png" id="6_tuyoq"]
 [ext_resource type="AudioStream" uid="uid://cgrx7vvod3u4t" path="res://music-sfx/dashsfx.mp3" id="7_fjrip"]
 [ext_resource type="AudioStream" uid="uid://cjaflf7iu3nwc" path="res://music-sfx/doublejump.mp3" id="8_smehm"]
+[ext_resource type="AudioStream" uid="uid://c0q2jthpo70xf" path="res://music-sfx/hitsfx.mp3" id="9_ur7pv"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qhqgy"]
 atlas = ExtResource("2_g2els")
@@ -207,6 +208,7 @@ collision_mask = 8
 script = ExtResource("1_g2els")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 2
 position = Vector2(1, -2)
 scale = Vector2(0.8979653, 1.0098174)
 sprite_frames = SubResource("SpriteFrames_qhqgy")
@@ -245,3 +247,6 @@ collision_mask = 4
 position = Vector2(-30, 7)
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_smehm")
+
+[node name="HitSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("9_ur7pv")

@@ -5,7 +5,6 @@ extends Node2D
 @onready var menu: AudioStreamPlayer = $Menu
 
 func _ready():
-	# Start with menu music
 	menu.play()
 	forest.stop()
 	tutorial.stop()

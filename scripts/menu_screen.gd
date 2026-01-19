@@ -1,9 +1,12 @@
 extends Control
 
+var active = true
+
 func _ready():
 	visible = true
 
 func _unhandled_input(event):
-	if event is InputEventKey and event.pressed:
+	if event is InputEventKey and event.pressed and active:
 		visible = false
-		#get_tree().root.get_node("Bgmusic").play_tutorial_music()
+		get_tree().root.get_node("Bgmusic").play_tutorial_music()
+		active = false
