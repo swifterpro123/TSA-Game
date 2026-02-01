@@ -2,191 +2,233 @@ extends CharacterBody2D
 
 signal lives_changed(current_lives)
 
-const SPEED = 300.0
-const JUMP_VELOCITY = -400.0
-const dashcd = 1
-const jumps = 2
-const DASH_SPEED = 2000.0
-const DASH_TIME = 0.12
-const KNOCKBACK_FORCE = 100.0  # New constant
+# =====================
+# CONSTANTS
+# =====================
+const SPEED := 300.0
+const JUMP_VELOCITY := -400.0
+const DASH_COOLDOWN := 1.0
+const MAX_JUMPS := 2
+const DASH_SPEED := 2000.0
+const DASH_TIME := 0.12
+const KNOCKBACK_FORCE := 100.0
 
 const MAX_LIVES := 5
-var regen_timer := 0.0
 const REGEN_INTERVAL := 20.0
+const CHECKPOINT_SPAWN_OFFSET := Vector2(0, -32)
+
+# =====================
+# STATE
+# =====================
 var lives := MAX_LIVES
-var currentjumps = 0
-var dashDirection = Vector2.ZERO
+var regen_timer := 0.0
 
-var is_iframe = false
-var is_knockback := false  # New variable
-var knockback_velocity := Vector2.ZERO  # New variable
+var current_jumps := 0
+var dash_direction := Vector2.ZERO
 
+var is_iframe := false
+var is_knockback := false
+var knockback_velocity := Vector2.ZERO
+
+var is_slashing := false
+var is_rolling := false
+var is_dashing := false
+var can_dash := true
+var dash_time_remaining := 0.0
+
+var last_checkpoint_pos: Vector2
+
+# =====================
+# NODES
+# =====================
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var dash_sprite: AnimatedSprite2D = $Dash
 @onready var dash_cooldown: Timer = $DashCooldown
-@onready var dash: AnimatedSprite2D = $Dash
 @onready var dash_sound: AudioStreamPlayer2D = $DashSound
 @onready var double_jump_sfx: AudioStreamPlayer2D = $DoubleJumpSFX
 @onready var slash_hitbox: Area2D = $SlashHitbox
-@onready var damage_flash: ColorRect = get_tree().current_scene.get_node("CanvasLayer/DamageFlash")
 @onready var hit_sfx: AudioStreamPlayer2D = $HitSFX
+@onready var damage_flash: ColorRect = get_tree().current_scene.get_node("CanvasLayer/DamageFlash")
 
+# =====================
+# DAMAGE FLASH
+# =====================
 var flash_timer := 0.0
-var flash_duration := 0.2
+const FLASH_DURATION := 0.2
 
-var is_slashing := false
-var can_dash := true
-var is_rolling := false
-var is_dashing := false
-var dash_time_remaining := 0.0
-
+# =====================
+# READY
+# =====================
 func _ready() -> void:
 	add_to_group("player")
-	
-	if dash.get_parent() != self:
-		remove_child(dash)
-		add_child(dash)
 
 	lives = MAX_LIVES
-	
-	animated_sprite.animation_finished.connect(_on_main_sprite_finished)
-	dash.animation_finished.connect(_on_dash_sprite_finished)
-	dash_cooldown.wait_time = dashcd
-	dash_cooldown.timeout.connect(_on_dash_cooldown_timeout)
-	
-	slash_hitbox.body_entered.connect(_on_slash_hitbox_body_entered)
+	var spawn = get_tree().current_scene.get_node("SpawnPoint")
+	if spawn:
+		last_checkpoint_pos = spawn.global_position + CHECKPOINT_SPAWN_OFFSET
+	else:
+		last_checkpoint_pos = global_position + CHECKPOINT_SPAWN_OFFSET
+
+	dash_cooldown.wait_time = DASH_COOLDOWN
+	dash_cooldown.timeout.connect(func(): can_dash = true)
+
+	animated_sprite.animation_finished.connect(_on_main_anim_finished)
+	dash_sprite.animation_finished.connect(func():
+		dash_sprite.visible = false
+		is_iframe = false
+	)
 
 	slash_hitbox.monitoring = false
+	slash_hitbox.body_entered.connect(_on_slash_hitbox_body_entered)
+
 	lives_changed.emit(lives)
 
+# =====================
+# DAMAGE / DEATH
+# =====================
 func take_damage(amount := 1) -> void:
-	if is_iframe == false:
-		hit_sfx.play()
-		lives -= amount
-		lives = max(lives, 0)
-		lives_changed.emit(lives)
+	if is_iframe:
+		return
 
-		regen_timer = 0.0
+	hit_sfx.play()
+	lives -= amount
+	lives = max(lives, 0)
+	lives_changed.emit(lives)
 
-		flash_timer = flash_duration
-		damage_flash.modulate.a = 1.0
+	regen_timer = 0.0
+	flash_timer = FLASH_DURATION
+	damage_flash.modulate.a = 1.0
 
 	if lives <= 0:
-		reset_player()
+		respawn()
 
-func reset_player() -> void:
+func respawn() -> void:
 	lives = MAX_LIVES
 	regen_timer = 0.0
 	lives_changed.emit(lives)
 
-	var checkpoints = get_tree().current_scene.get_node("Checkpoints")
-	if checkpoints:
-		checkpoints.respawn_player(self)
+	call_deferred("_do_respawn")
 
+func set_checkpoint(pos: Vector2) -> void:
+	last_checkpoint_pos = pos + CHECKPOINT_SPAWN_OFFSET
+	print("Player checkpoint set to:", last_checkpoint_pos)
+
+func _do_respawn() -> void:
+	print("Respawning at:", last_checkpoint_pos)
+	global_position = last_checkpoint_pos
 	velocity = Vector2.ZERO
 
+# =====================
+# SLASH
+# =====================
+func _on_slash_hitbox_body_entered(body) -> void:
+	if body is DroneEnemy:
+		body.take_damage(25)
+		var dir: Vector2 = (body.global_position - global_position).normalized()
 
-func _on_main_sprite_finished() -> void:
-	if animated_sprite.animation == "slash":
-		is_slashing = false
-	if animated_sprite.animation == "roll":
-		is_rolling = false
+		body.apply_knockback(dir, KNOCKBACK_FORCE)
 
-func update_slash_hitbox():
+func update_slash_hitbox() -> void:
 	var offset_x := 100.0
 	slash_hitbox.position = Vector2(
 		offset_x if animated_sprite.flip_h else -offset_x,
 		0
 	)
 
-func _on_dash_sprite_finished() -> void:
-	dash.visible = false
-	is_iframe = false
-	
-func _on_slash_hitbox_body_entered(body):
-	print("HIT:", body.name)
-	if body is DroneEnemy:
-		body.take_damage(25)
-		var knockback_dir = (body.global_position - global_position).normalized()
-		body.apply_knockback(knockback_dir, KNOCKBACK_FORCE)
+# =====================
+# ANIMATION CALLBACKS
+# =====================
+func _on_main_anim_finished() -> void:
+	if animated_sprite.animation == "slash":
+		is_slashing = false
+	if animated_sprite.animation == "roll":
+		is_rolling = false
 
-func _on_dash_cooldown_timeout() -> void:
-	can_dash = true
-
+# =====================
+# PHYSICS
+# =====================
 func _physics_process(delta: float) -> void:
 	var direction := Input.get_axis("move_left", "move_right")
 	update_slash_hitbox()
-
 	slash_hitbox.monitoring = is_slashing
 
+	# ---- Knockback ----
 	if is_knockback:
 		velocity = knockback_velocity
 		knockback_velocity = knockback_velocity.lerp(Vector2.ZERO, delta * 8.0)
-		if knockback_velocity.length() < 50:
+		if knockback_velocity.length() < 40:
 			is_knockback = false
-			knockback_velocity = Vector2.ZERO
 	else:
+		# Gravity
 		if not is_on_floor():
 			velocity += get_gravity() * delta
 
-		if Input.is_action_just_pressed("jump") and is_on_floor():
-			velocity.y = JUMP_VELOCITY
-			currentjumps = 1
-		elif Input.is_action_just_pressed("jump") and not is_on_floor() and currentjumps < jumps:
-			velocity.y = JUMP_VELOCITY
-			double_jump_sfx.play()
-			currentjumps += 1
-			is_rolling = true
-			is_slashing = false
-			animated_sprite.play("roll")
-		elif is_on_floor():
-			currentjumps = 0
+		# Jump
+		if Input.is_action_just_pressed("jump"):
+			if is_on_floor():
+				velocity.y = JUMP_VELOCITY
+				current_jumps = 1
+			elif current_jumps < MAX_JUMPS:
+				velocity.y = JUMP_VELOCITY
+				current_jumps += 1
+				double_jump_sfx.play()
+				is_rolling = true
+				is_slashing = false
+				animated_sprite.play("roll")
 
+		if is_on_floor():
+			current_jumps = 0
+
+		# Slash
 		if Input.is_action_just_pressed("slash") and not is_slashing and not is_rolling and not is_dashing:
 			is_slashing = true
 			animated_sprite.play("slash")
 
-		if Input.is_action_just_pressed("dash") and not is_slashing and not is_rolling and not is_dashing and can_dash:
+		# Dash
+		if Input.is_action_just_pressed("dash") and can_dash and not is_dashing and not is_slashing and not is_rolling:
 			can_dash = false
-			is_iframe = true
-			dash_cooldown.start()
 			is_dashing = true
+			is_iframe = true
 			dash_time_remaining = DASH_TIME
+			dash_cooldown.start()
 
-			if direction != 0:
-				dashDirection = Vector2(direction, 0)
-			else:
-				dashDirection = Vector2(1, 0) if animated_sprite.flip_h else Vector2(-1, 0)
+			dash_direction = Vector2(direction, 0) if direction != 0 else (
+				Vector2(1, 0) if animated_sprite.flip_h else Vector2(-1, 0)
+			)
 
+			velocity = dash_direction * DASH_SPEED
 			dash_sound.play()
-			velocity = dashDirection * DASH_SPEED
-			
-			dash.global_position = global_position
-			dash.visible = true
-			dash.flip_h = dashDirection.x < 0
-			dash.play("default")
 
+			dash_sprite.global_position = global_position
+			dash_sprite.visible = true
+			dash_sprite.flip_h = dash_direction.x < 0
+			dash_sprite.play("default")
+
+		# Horizontal movement
 		if not is_dashing:
 			if direction != 0:
 				velocity.x = direction * SPEED
 				animated_sprite.flip_h = direction > 0
-				if not is_rolling and not is_slashing:
+				if not is_slashing and not is_rolling:
 					animated_sprite.play("run")
 			else:
 				velocity.x = move_toward(velocity.x, 0, SPEED)
-				if not is_rolling and not is_slashing:
+				if not is_slashing and not is_rolling:
 					animated_sprite.play("idle")
 		else:
 			dash_time_remaining -= delta
 			if dash_time_remaining <= 0:
 				is_dashing = false
 				velocity.x = 0
-			
+
+	# ---- Damage Flash ----
 	if flash_timer > 0:
 		flash_timer -= delta
-		damage_flash.modulate.a = lerp(damage_flash.modulate.a, 0.0, float(delta) * 10)
+		damage_flash.modulate.a = lerp(damage_flash.modulate.a, 0.0, delta * 10)
 	else:
-		damage_flash.modulate.a = 0
-		
+		damage_flash.modulate.a = 0.0
+
+	# ---- Health Regen ----
 	if lives < MAX_LIVES:
 		regen_timer += delta
 		if regen_timer >= REGEN_INTERVAL:
