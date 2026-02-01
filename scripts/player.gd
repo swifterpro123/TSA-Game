@@ -77,8 +77,13 @@ func reset_player() -> void:
 	lives = MAX_LIVES
 	regen_timer = 0.0
 	lives_changed.emit(lives)
-	global_position = Vector2(50,-10)
+
+	var checkpoints = get_tree().current_scene.get_node("Checkpoints")
+	if checkpoints:
+		checkpoints.respawn_player(self)
+
 	velocity = Vector2.ZERO
+
 
 func _on_main_sprite_finished() -> void:
 	if animated_sprite.animation == "slash":
@@ -101,7 +106,6 @@ func _on_slash_hitbox_body_entered(body):
 	print("HIT:", body.name)
 	if body is DroneEnemy:
 		body.take_damage(25)
-		# Apply knockback to enemy
 		var knockback_dir = (body.global_position - global_position).normalized()
 		body.apply_knockback(knockback_dir, KNOCKBACK_FORCE)
 
@@ -114,7 +118,6 @@ func _physics_process(delta: float) -> void:
 
 	slash_hitbox.monitoring = is_slashing
 
-	# Handle knockback
 	if is_knockback:
 		velocity = knockback_velocity
 		knockback_velocity = knockback_velocity.lerp(Vector2.ZERO, delta * 8.0)
