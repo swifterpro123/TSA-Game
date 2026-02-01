@@ -15491,7 +15491,6 @@ tile_set = SubResource("TileSet_lbhrr")
 [node name="SkyBG" type="Node2D" parent="."]
 
 [node name="Parallax2D" type="Parallax2D" parent="SkyBG"]
-visible = false
 z_index = 1
 repeat_size = Vector2(1444, 0)
 repeat_times = 2
@@ -15534,42 +15533,55 @@ slash_scene = ExtResource("15_pl11u")
 
 [node name="Drone2" parent="Enemies" instance=ExtResource("8_gee14")]
 position = Vector2(10153, -195)
+slash_scene = ExtResource("15_pl11u")
 
 [node name="Drone3" parent="Enemies" instance=ExtResource("8_gee14")]
 position = Vector2(11282, -296)
+slash_scene = ExtResource("15_pl11u")
 
 [node name="Drone4" parent="Enemies" instance=ExtResource("8_gee14")]
 position = Vector2(12205, -61)
+slash_scene = ExtResource("15_pl11u")
 
 [node name="Drone5" parent="Enemies" instance=ExtResource("8_gee14")]
 position = Vector2(10731, -157)
+slash_scene = ExtResource("15_pl11u")
 
 [node name="Drone6" parent="Enemies" instance=ExtResource("8_gee14")]
 position = Vector2(12671, -137)
+slash_scene = ExtResource("15_pl11u")
 
 [node name="Drone7" parent="Enemies" instance=ExtResource("8_gee14")]
 position = Vector2(14468, -383)
+slash_scene = ExtResource("15_pl11u")
 
 [node name="Drone8" parent="Enemies" instance=ExtResource("8_gee14")]
 position = Vector2(15027, -425)
+slash_scene = ExtResource("15_pl11u")
 
 [node name="Drone9" parent="Enemies" instance=ExtResource("8_gee14")]
 position = Vector2(15574, -494)
+slash_scene = ExtResource("15_pl11u")
 
 [node name="Drone10" parent="Enemies" instance=ExtResource("8_gee14")]
 position = Vector2(18277, -181)
+slash_scene = ExtResource("15_pl11u")
 
 [node name="Drone11" parent="Enemies" instance=ExtResource("8_gee14")]
 position = Vector2(17437, -352)
+slash_scene = ExtResource("15_pl11u")
 
 [node name="Drone12" parent="Enemies" instance=ExtResource("8_gee14")]
 position = Vector2(16209, -381)
+slash_scene = ExtResource("15_pl11u")
 
 [node name="Drone13" parent="Enemies" instance=ExtResource("8_gee14")]
 position = Vector2(18855, -214)
+slash_scene = ExtResource("15_pl11u")
 
 [node name="Drone14" parent="Enemies" instance=ExtResource("8_gee14")]
 position = Vector2(19750, -263)
+slash_scene = ExtResource("15_pl11u")
 
 [node name="SpawnPoint" type="Node2D" parent="."]
 position = Vector2(-371, -72)

@@ -10,6 +10,7 @@ script = ExtResource("1_pbe2m")
 
 [node name="Forest" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_pbe2m")
+volume_db = -12.86
 
 [node name="Tutorial" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_usvw6")
