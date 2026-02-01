@@ -1,7 +1,8 @@
 [gd_scene load_steps=10 format=3 uid="uid://6ntvenc6adsr"]
 
-[ext_resource type="Script" uid="uid://3j365l7hbe08" path="res://scenes/SlashEffect.gd" id="1_6qcn7"]
+[ext_resource type="Script" uid="uid://3j365l7hbe08" path="res://scripts/SlashEffect.gd" id="1_6qcn7"]
 [ext_resource type="Texture2D" uid="uid://dib3fkiwkkwd0" path="res://sprites/drone slash.png" id="2_ish5s"]
+
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6qcn7"]
 atlas = ExtResource("2_ish5s")

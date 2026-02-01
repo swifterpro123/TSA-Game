@@ -1,5 +1,4 @@
 extends CharacterBody2D
-class_name DroneEnemy
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var hitbox: Area2D = $Hitbox
 @onready var direction_timer: Timer = $DirectionTimer
@@ -28,6 +27,7 @@ var knockback_velocity := Vector2.ZERO  # New variable
 @export var slash_scene: PackedScene
 
 func _ready():
+	add_to_group("enemies")
 	player = get_tree().get_first_node_in_group("player")
 	hitbox.body_entered.connect(_on_hitbox_body_entered)
 	# setup attack cooldown timer

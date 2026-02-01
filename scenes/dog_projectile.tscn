@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3 uid="uid://cnqvoo4ls5t4i"]
+
+[ext_resource type="Script" uid="uid://d2kl6wov6gsc4" path="res://scripts/dog_projectile.gd" id="1_bp1oy"]
+[ext_resource type="Texture2D" uid="uid://vpb83q64jxeh" path="res://sprites/Lightning Ball.png" id="2_727xc"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ort7r"]
+atlas = ExtResource("2_727xc")
+region = Rect2(0, 0, 200, 200)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rmu71"]
+atlas = ExtResource("2_727xc")
+region = Rect2(200, 0, 200, 200)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3fhx1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ort7r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rmu71")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_idujk"]
+size = Vector2(134, 138)
+
+[node name="DogProjectile" type="Area2D"]
+script = ExtResource("1_bp1oy")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.35, 0.35)
+sprite_frames = SubResource("SpriteFrames_3fhx1")
+autoplay = "default"
+frame_progress = 0.39084792
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-2.3841858e-07, -2.0000014)
+scale = Vector2(0.35, 0.35)
+shape = SubResource("RectangleShape2D_idujk")

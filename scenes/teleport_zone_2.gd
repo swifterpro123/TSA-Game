@@ -1,7 +1,7 @@
 extends Area2D
 
-@export var checkpoint_index := 1
-const TARGET_POS := Vector2(8000, -10)
+@export var checkpoint_index := 2
+const TARGET_POS := Vector2(27931.0, -130.0)
 @onready var sky_bg: Node2D = $"../../SkyBG"
 @onready var tut_bg: Node2D = $"../../TutBG"
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D

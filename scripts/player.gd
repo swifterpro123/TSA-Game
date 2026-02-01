@@ -17,6 +17,10 @@ const MAX_LIVES := 5
 const REGEN_INTERVAL := 20.0
 const CHECKPOINT_SPAWN_OFFSET := Vector2(0, -32)
 
+@onready var sky_bg: Node2D = $"../SkyBG"
+@onready var tut_bg: Node2D = $"../TutBG"
+
+
 # =====================
 # STATE
 # =====================
@@ -117,15 +121,18 @@ func _do_respawn() -> void:
 	print("Respawning at:", last_checkpoint_pos)
 	global_position = last_checkpoint_pos
 	velocity = Vector2.ZERO
+	if last_checkpoint_pos == Vector2(4243.0,-42.0):
+		sky_bg.visible = false
+		tut_bg.visible = true
+		get_tree().root.get_node("Bgmusic").play_tutorial_music()
 
 # =====================
 # SLASH
 # =====================
 func _on_slash_hitbox_body_entered(body) -> void:
-	if body is DroneEnemy:
+	if body.is_in_group("enemies"):
 		body.take_damage(25)
 		var dir: Vector2 = (body.global_position - global_position).normalized()
-
 		body.apply_knockback(dir, KNOCKBACK_FORCE)
 
 func update_slash_hitbox() -> void:

@@ -22,6 +22,7 @@ func set_checkpoint(index: int, pos: Vector2):
 			player.set_checkpoint(pos)
 			print("Successfully set player checkpoint")
 			
+			
 		print("Checkpoint reached:", index)
 	else:
 		print("Checkpoint", index, "ignored (not further than", furthest_checkpoint, ")")

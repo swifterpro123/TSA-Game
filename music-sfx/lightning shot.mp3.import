@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://2ng5ywwwi47l"
+path="res://.godot/imported/lightning shot.mp3-c62f56cdda1a3ac1f9c7819bbca19eea.mp3str"
+
+[deps]
+
+source_file="res://music-sfx/lightning shot.mp3"
+dest_files=["res://.godot/imported/lightning shot.mp3-c62f56cdda1a3ac1f9c7819bbca19eea.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
