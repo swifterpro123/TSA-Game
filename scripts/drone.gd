@@ -25,6 +25,8 @@ const ATTACK_COOLDOWN := 1.0
 var is_knockback := false  # New variable
 var knockback_velocity := Vector2.ZERO  # New variable
 
+@export var slash_scene: PackedScene
+
 func _ready():
 	player = get_tree().get_first_node_in_group("player")
 	hitbox.body_entered.connect(_on_hitbox_body_entered)
@@ -60,8 +62,24 @@ func _on_hitbox_body_entered(body):
 		return
 	if body.is_in_group("player"):
 		body.take_damage(1)
+		spawn_slash_effect()
 		can_attack = false
 		attack_timer.start()
+
+func spawn_slash_effect():
+	if slash_scene == null:
+		return
+
+	var slash = slash_scene.instantiate()
+	get_parent().add_child(slash)
+
+	# Position slightly in front of the drone
+	var offset := Vector2(20, 0)
+	if sprite.flip_h:
+		offset.x = -offset.x
+		slash.scale.x = -1  # Flip slash if facing left
+
+	slash.global_position = global_position + offset
 
 func _on_attack_cooldown_timeout():
 	can_attack = true

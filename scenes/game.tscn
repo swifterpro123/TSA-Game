@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=4 uid="uid://0yyjag5xrrmh"]
+[gd_scene load_steps=39 format=4 uid="uid://0yyjag5xrrmh"]
 
 [ext_resource type="PackedScene" uid="uid://ollwsdcb478w" path="res://scenes/player.tscn" id="1_uwrxv"]
 [ext_resource type="Texture2D" uid="uid://qvwj6vyh0rb8" path="res://sprites/grass.png" id="1_yqjtg"]
@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://c4il8ps56c75b" path="res://sprites/House.png" id="11_bt5mj"]
 [ext_resource type="Texture2D" uid="uid://d1615owlnstqw" path="res://sprites/brokenheart.png" id="11_dinhu"]
 [ext_resource type="Texture2D" uid="uid://c5gaub2txkdt5" path="res://sprites/tut bg better.png" id="11_rysoc"]
+[ext_resource type="PackedScene" uid="uid://6ntvenc6adsr" path="res://scenes/SlashEffect.tscn" id="15_pl11u"]
 [ext_resource type="PackedScene" uid="uid://dxvedhhqymhbx" path="res://scenes/kill_zone.tscn" id="16_ca42v"]
 [ext_resource type="Texture2D" uid="uid://dxiihuhoahyey" path="res://sprites/Title_Screen.png" id="16_ssvqc"]
 [ext_resource type="Script" uid="uid://dp4qcli6mmaaw" path="res://scripts/menu_screen.gd" id="17_1kice"]
@@ -15529,6 +15530,7 @@ region_rect = Rect2(0, 0, 2349, 1740)
 
 [node name="Drone" parent="Enemies" instance=ExtResource("8_gee14")]
 position = Vector2(3558, -121)
+slash_scene = ExtResource("15_pl11u")
 
 [node name="Drone2" parent="Enemies" instance=ExtResource("8_gee14")]
 position = Vector2(10153, -195)
@@ -15646,6 +15648,7 @@ grow_vertical = 2
 color = Color(1, 0, 0, 1)
 
 [node name="DeathScreen" type="TextureRect" parent="CanvasLayer"]
+visible = false
 offset_left = -1.0
 offset_top = -5.0
 offset_right = 1160.0
@@ -15785,3 +15788,5 @@ script = ExtResource("17_rysoc")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoints/Checkpoint1"]
 position = Vector2(4343, -52)
 shape = SubResource("RectangleShape2D_ssvqc")
+
+[node name="SlashEffect" type="Node2D" parent="."]

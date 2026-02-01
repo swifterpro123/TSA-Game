@@ -1,0 +1,65 @@
+[gd_scene load_steps=10 format=3 uid="uid://6ntvenc6adsr"]
+
+[ext_resource type="Script" uid="uid://3j365l7hbe08" path="res://scenes/SlashEffect.gd" id="1_6qcn7"]
+[ext_resource type="Texture2D" uid="uid://dib3fkiwkkwd0" path="res://sprites/drone slash.png" id="2_ish5s"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6qcn7"]
+atlas = ExtResource("2_ish5s")
+region = Rect2(0, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ish5s"]
+atlas = ExtResource("2_ish5s")
+region = Rect2(100, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gt3is"]
+atlas = ExtResource("2_ish5s")
+region = Rect2(200, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_smfpa"]
+atlas = ExtResource("2_ish5s")
+region = Rect2(300, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x5g16"]
+atlas = ExtResource("2_ish5s")
+region = Rect2(400, 0, 100, 100)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mrsa8"]
+atlas = ExtResource("2_ish5s")
+region = Rect2(500, 0, 100, 100)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1xevc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6qcn7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ish5s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gt3is")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_smfpa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x5g16")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mrsa8")
+}],
+"loop": false,
+"name": &"slash",
+"speed": 24.0
+}]
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_6qcn7")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(31.000004, 4.9999924)
+scale = Vector2(2.53, 2.18)
+sprite_frames = SubResource("SpriteFrames_1xevc")
+animation = &"slash"
+frame = 5
+frame_progress = 1.0
