@@ -5,6 +5,7 @@ const TARGET_POS := Vector2(27931.0, -130.0)
 @onready var sky_bg: Node2D = $"../../SkyBG"
 @onready var tut_bg: Node2D = $"../../TutBG"
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
+@onready var volcano_bg: Node2D = $"../../VolcanoBG"
 
 func _ready():
 	body_entered.connect(_on_body_entered)
@@ -25,4 +26,5 @@ func _on_body_entered(body):
 		
 		get_tree().root.get_node("Bgmusic").play_forest_music()
 		tut_bg.visible = false
-		sky_bg.visible = true
+		sky_bg.visible = false
+		volcano_bg.visible = true

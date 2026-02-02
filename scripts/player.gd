@@ -19,6 +19,7 @@ const CHECKPOINT_SPAWN_OFFSET := Vector2(0, -32)
 
 @onready var sky_bg: Node2D = $"../SkyBG"
 @onready var tut_bg: Node2D = $"../TutBG"
+@onready var death_screen: TextureRect = $"../CanvasLayer/DeathScreen"
 
 
 # =====================
@@ -104,7 +105,8 @@ func take_damage(amount := 1) -> void:
 	damage_flash.modulate.a = 1.0
 
 	if lives <= 0:
-		respawn()
+		get_tree().root.get_node("Bgmusic").play_death_music()
+		death_screen.visible = true
 
 func respawn() -> void:
 	lives = MAX_LIVES
@@ -121,10 +123,15 @@ func _do_respawn() -> void:
 	print("Respawning at:", last_checkpoint_pos)
 	global_position = last_checkpoint_pos
 	velocity = Vector2.ZERO
-	if last_checkpoint_pos == Vector2(4243.0,-42.0):
+	if last_checkpoint_pos == Vector2(4243.0,-42.0) or last_checkpoint_pos == Vector2(0.0,-32.0) or last_checkpoint_pos == Vector2(4243.0,-84.0):
 		sky_bg.visible = false
 		tut_bg.visible = true
 		get_tree().root.get_node("Bgmusic").play_tutorial_music()
+	elif last_checkpoint_pos == Vector2(19420.0, -281.0):
+		sky_bg.visible = true
+		tut_bg.visible = false
+		get_tree().root.get_node("Bgmusic").play_tutorial_music()
+
 
 # =====================
 # SLASH
