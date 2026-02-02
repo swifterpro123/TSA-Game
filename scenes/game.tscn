@@ -20277,7 +20277,7 @@ position = Vector2(32911, -342)
 projectile_scene = ExtResource("18_sww3w")
 
 [node name="Dog5" parent="Enemies" instance=ExtResource("17_qnb83")]
-position = Vector2(34354, -508)
+position = Vector2(34394, -153)
 projectile_scene = ExtResource("18_sww3w")
 
 [node name="Dog6" parent="Enemies" instance=ExtResource("17_qnb83")]
@@ -20305,7 +20305,7 @@ position = Vector2(31878, -347)
 slash_scene = ExtResource("15_pl11u")
 
 [node name="Drone14" parent="Enemies" instance=ExtResource("8_gee14")]
-position = Vector2(33355, -169)
+position = Vector2(33522, -45)
 slash_scene = ExtResource("15_pl11u")
 
 [node name="Drone15" parent="Enemies" instance=ExtResource("8_gee14")]
@@ -20317,7 +20317,7 @@ position = Vector2(36111, -345)
 slash_scene = ExtResource("15_pl11u")
 
 [node name="Drone17" parent="Enemies" instance=ExtResource("8_gee14")]
-position = Vector2(37592, -411)
+position = Vector2(37494, -394)
 slash_scene = ExtResource("15_pl11u")
 
 [node name="Dog9" parent="Enemies" instance=ExtResource("17_qnb83")]
