@@ -11,12 +11,12 @@ const SLASH_COOLDOWN := 2.0
 const ORB_COOLDOWN := 3.0
 const ORB_DELAY := 1.0  # Animation delay before shooting orb
 
-const MAX_HEALTH := 1000
+const MAX_HEALTH := 1250
 var health := MAX_HEALTH
 var dead := false
 
 var detection_range := 300.0  # Range to detect player
-var slash_range := 80.0  # Range for melee slash
+var slash_range := 100.0  # Range for melee slash
 var orb_range := 300.0  # Range for orb attack
 
 var player: Node2D

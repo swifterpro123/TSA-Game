@@ -27,7 +27,7 @@ stream = ExtResource("5_s7gy4")
 
 [node name="Volcano" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_65ksg")
-volume_db = -6.38
+volume_db = -16.875
 
 [node name="Bossfight" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("7_4lubm")
