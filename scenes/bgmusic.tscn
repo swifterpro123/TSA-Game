@@ -1,10 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://dp26gyh0v488o"]
+[gd_scene load_steps=9 format=3 uid="uid://dp26gyh0v488o"]
 
 [ext_resource type="Script" uid="uid://c1goo0xta654k" path="res://scripts/bgmusic.gd" id="1_pbe2m"]
 [ext_resource type="AudioStream" uid="uid://tr0hkpyqndt6" path="res://music-sfx/village.mp3" id="2_pbe2m"]
 [ext_resource type="AudioStream" uid="uid://bri4h34x8t07e" path="res://music-sfx/tutorial.mp3" id="2_usvw6"]
 [ext_resource type="AudioStream" uid="uid://ox70588rkpph" path="res://music-sfx/menu.mp3" id="3_pbe2m"]
 [ext_resource type="AudioStream" uid="uid://bt5fjfol3yifs" path="res://music-sfx/you can do it!.mp3" id="5_s7gy4"]
+[ext_resource type="AudioStream" uid="uid://dh6402o7n5mtj" path="res://music-sfx/volcanic volcano.mp3" id="6_65ksg"]
+[ext_resource type="AudioStream" uid="uid://bjo763i4qcflo" path="res://music-sfx/robot boss yay.mp3" id="7_4lubm"]
+[ext_resource type="AudioStream" uid="uid://capydwhgrmpd3" path="res://music-sfx/end screen.mp3" id="8_bi025"]
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_pbe2m")
@@ -21,3 +24,12 @@ stream = ExtResource("3_pbe2m")
 
 [node name="Death" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_s7gy4")
+
+[node name="Volcano" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_65ksg")
+
+[node name="Bossfight" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_4lubm")
+
+[node name="EndMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_bi025")

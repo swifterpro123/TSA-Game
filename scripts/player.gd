@@ -54,6 +54,8 @@ var last_checkpoint_pos: Vector2
 @onready var slash_hitbox: Area2D = $SlashHitbox
 @onready var hit_sfx: AudioStreamPlayer2D = $HitSFX
 @onready var damage_flash: ColorRect = get_tree().current_scene.get_node("CanvasLayer/DamageFlash")
+@onready var boss_bar: TextureRect = $"../CanvasLayer/BossBar"
+
 
 # =====================
 # DAMAGE FLASH
@@ -107,6 +109,8 @@ func take_damage(amount := 1) -> void:
 	if lives <= 0:
 		get_tree().root.get_node("Bgmusic").play_death_music()
 		death_screen.visible = true
+		boss_bar.visible = false
+		
 
 func respawn() -> void:
 	lives = MAX_LIVES

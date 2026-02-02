@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://capydwhgrmpd3"
+path="res://.godot/imported/end screen.mp3-0f502f8b412812f2619cb9c8a783223d.mp3str"
+
+[deps]
+
+source_file="res://music-sfx/end screen.mp3"
+dest_files=["res://.godot/imported/end screen.mp3-0f502f8b412812f2619cb9c8a783223d.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
