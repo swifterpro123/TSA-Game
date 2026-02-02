@@ -19,6 +19,11 @@ config/icon="res://icon.svg"
 
 Bgmusic="*res://scenes/bgmusic.tscn"
 
+[display]
+
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
 [editor]
 
 movie_writer/movie_file="C:/Users/sahas/Code/tsa-game/footage/test.avi"
