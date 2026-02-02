@@ -26,18 +26,19 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_idujk"]
-size = Vector2(134, 138)
+size = Vector2(76.750015, 82.85714)
 
 [node name="DogProjectile" type="Area2D"]
 script = ExtResource("1_bp1oy")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-scale = Vector2(0.35, 0.35)
+position = Vector2(-2.7105054e-20, 1.1920929e-07)
+scale = Vector2(0.17, 0.17)
 sprite_frames = SubResource("SpriteFrames_3fhx1")
 autoplay = "default"
 frame_progress = 0.39084792
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-2.3841858e-07, -2.0000014)
+position = Vector2(0.431252, -1.4999994)
 scale = Vector2(0.35, 0.35)
 shape = SubResource("RectangleShape2D_idujk")
