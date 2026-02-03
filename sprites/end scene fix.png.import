@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d1e2fud8x0rbi"
-path="res://.godot/imported/end_scene.png-f5bd49589f0c89ba2c2290ca5dac57ec.ctex"
+uid="uid://bf6msqhs13qdy"
+path="res://.godot/imported/end scene fix.png-9a1663fa5d8da0066418e2781a44dcb3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/end_scene.png"
-dest_files=["res://.godot/imported/end_scene.png-f5bd49589f0c89ba2c2290ca5dac57ec.ctex"]
+source_file="res://sprites/end scene fix.png"
+dest_files=["res://.godot/imported/end scene fix.png-9a1663fa5d8da0066418e2781a44dcb3.ctex"]
 
 [params]
 

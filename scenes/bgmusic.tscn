@@ -34,3 +34,4 @@ stream = ExtResource("7_4lubm")
 
 [node name="EndMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("8_bi025")
+volume_db = -3.817
