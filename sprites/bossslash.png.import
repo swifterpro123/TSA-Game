@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d1g7dcifr227r"
-path="res://.godot/imported/boss robot beam.png-d71218cbd819a5b8e16a85c9a1f28581.ctex"
+uid="uid://bdnrtoo4cwv0o"
+path="res://.godot/imported/bossslash.png-3ac25aad1d575fa11aa70b43f579f375.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/boss robot beam.png"
-dest_files=["res://.godot/imported/boss robot beam.png-d71218cbd819a5b8e16a85c9a1f28581.ctex"]
+source_file="res://sprites/bossslash.png"
+dest_files=["res://.godot/imported/bossslash.png-3ac25aad1d575fa11aa70b43f579f375.ctex"]
 
 [params]
 

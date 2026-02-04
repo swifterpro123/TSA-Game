@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ccnguly63r3ls"
-path="res://.godot/imported/boss robot slash.png-acf5f953804330224084fddd1ca6ece5.ctex"
+uid="uid://cwnxpsnjofdfw"
+path="res://.godot/imported/bossidle.png-1ba359ab876ca9923ee63bdd5470d73a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/boss robot slash.png"
-dest_files=["res://.godot/imported/boss robot slash.png-acf5f953804330224084fddd1ca6ece5.ctex"]
+source_file="res://sprites/bossidle.png"
+dest_files=["res://.godot/imported/bossidle.png-1ba359ab876ca9923ee63bdd5470d73a.ctex"]
 
 [params]
 

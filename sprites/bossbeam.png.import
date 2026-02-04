@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bt4ln5j4db33x"
-path="res://.godot/imported/boss robot idle.png-1d57b0749e7ac0a9f3a324e5aacb1795.ctex"
+uid="uid://lv5uoij3eclc"
+path="res://.godot/imported/bossbeam.png-79e7b0fc48efef9772a1edf0189b51da.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/boss robot idle.png"
-dest_files=["res://.godot/imported/boss robot idle.png-1d57b0749e7ac0a9f3a324e5aacb1795.ctex"]
+source_file="res://sprites/bossbeam.png"
+dest_files=["res://.godot/imported/bossbeam.png-79e7b0fc48efef9772a1edf0189b51da.ctex"]
 
 [params]
 

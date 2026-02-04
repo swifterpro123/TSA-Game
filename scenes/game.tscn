@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=4 uid="uid://0yyjag5xrrmh"]
+[gd_scene load_steps=52 format=4 uid="uid://0yyjag5xrrmh"]
 
 [ext_resource type="PackedScene" uid="uid://ollwsdcb478w" path="res://scenes/player.tscn" id="1_uwrxv"]
 [ext_resource type="Texture2D" uid="uid://qvwj6vyh0rb8" path="res://sprites/grass.png" id="1_yqjtg"]
@@ -31,7 +31,7 @@
 [ext_resource type="Texture2D" uid="uid://b0t8elc084iu3" path="res://sprites/deathscreen.png" id="21_e1j6l"]
 [ext_resource type="Script" uid="uid://cks7vmpyfc0x0" path="res://scripts/checkpoints.gd" id="22_bt5mj"]
 [ext_resource type="Script" uid="uid://cv1i4r4ev2nw" path="res://scenes/button.gd" id="26_sgl2t"]
-[ext_resource type="Texture2D" uid="uid://chg4axeei803v" path="res://sprites/bossbar.png" id="28_v2yb1"]
+[ext_resource type="Texture2D" uid="uid://pt8h4rw0un3c" path="res://sprites/bossbar.png" id="28_v2yb1"]
 [ext_resource type="Script" uid="uid://bd8owwkobiaxa" path="res://scenes/teleport_zone_2.gd" id="29_suyxu"]
 [ext_resource type="Texture2D" uid="uid://bf6msqhs13qdy" path="res://sprites/end scene fix.png" id="30_gxtfn"]
 [ext_resource type="Script" uid="uid://dlsb8hoxhjijb" path="res://scenes/checkpoint_3.gd" id="34_js0lu"]
@@ -20134,10 +20134,6 @@ sources/8 = SubResource("TileSetAtlasSource_pl11u")
 sources/10 = SubResource("TileSetAtlasSource_e1j6l")
 sources/9 = SubResource("TileSetAtlasSource_qnb83")
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_js0lu"]
-atlas = ExtResource("28_v2yb1")
-region = Rect2(1362.0645, 0, 1449.8145, 411.1377)
-
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_rysoc"]
 distance = -325.0
 
@@ -24473,7 +24469,7 @@ offset_left = 382.0
 offset_top = 31.0
 offset_right = 774.0
 offset_bottom = 154.0
-texture = SubResource("AtlasTexture_js0lu")
+texture = ExtResource("28_v2yb1")
 expand_mode = 1
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer/BossBar"]
