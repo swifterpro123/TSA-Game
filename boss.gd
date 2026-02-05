@@ -8,15 +8,23 @@ extends CharacterBody2D
 
 const SPEED := 80.0  # Boss moves slower
 const SLASH_COOLDOWN := 2.0
+const SLASH_DELAY := 1.0
 const ORB_COOLDOWN := 3.0
 const ORB_DELAY := 1.0  # Animation delay before shooting orb
+
+const SLASH_DASH_SPEED := 260.0
+const SLASH_DASH_TIME := 0.15
+
+var is_dashing := false
+var dash_timer := 0.0
+var dash_direction := 0
 
 const MAX_HEALTH := 1250
 var health := MAX_HEALTH
 var dead := false
 
 var detection_range := 300.0  # Range to detect player
-var slash_range := 100.0  # Range for melee slash
+var slash_range := 120.0  # Range for melee slash
 var orb_range := 300.0  # Range for orb attack
 
 var player: Node2D
@@ -41,6 +49,7 @@ var knockback_velocity := Vector2.ZERO
 @export var slash_scene: PackedScene
 
 @onready var slash_timer: Timer = Timer.new()
+@onready var slash_delay_timer: Timer = Timer.new()
 @onready var orb_timer: Timer = Timer.new()
 @onready var orb_delay_timer: Timer = Timer.new()
 
@@ -64,6 +73,12 @@ func _ready():
 	slash_timer.one_shot = true
 	slash_timer.timeout.connect(func(): can_slash = true)
 	add_child(slash_timer)
+	
+	#Setup slash delay
+	slash_delay_timer.wait_time = SLASH_DELAY
+	slash_delay_timer.one_shot = true
+	slash_delay_timer.timeout.connect(_enable_slash_hitbox)
+	add_child(slash_delay_timer)
 	
 	# Setup orb cooldown timer
 	orb_timer.wait_time = ORB_COOLDOWN
@@ -163,6 +178,7 @@ func _on_animation_finished():
 	if sprite.animation == "slash":
 		is_slashing = false
 		is_attacking = false
+		is_dashing = false
 		hitbox.monitoring = false  # Disable hitbox after slash
 	elif sprite.animation == "orb":
 		is_attacking = false
@@ -170,11 +186,30 @@ func _on_animation_finished():
 func slash_attack():
 	if not can_slash or is_attacking:
 		return
-	
+
 	is_attacking = true
 	is_slashing = true
-	hitbox.monitoring = true  # Enable hitbox during slash
 	sprite.play("slash")
+
+	# Start dash
+	is_dashing = true
+	dash_timer = SLASH_DASH_TIME
+
+	dash_direction = 1
+	if not sprite.flip_h:
+		dash_direction = -1
+
+	is_dashing = true
+	dash_timer = SLASH_DASH_TIME
+
+	# Delay hitbox activation
+	hitbox.monitoring = false
+	slash_delay_timer.start()
+	
+func _enable_slash_hitbox():
+	if dead or not is_slashing:
+		return
+	hitbox.monitoring = true
 
 func orb_attack():
 	if not can_shoot_orb or is_attacking or projectile_scene == null:
@@ -261,6 +296,17 @@ func _physics_process(delta):
 		move_and_slide()
 		return
 	
+	if is_dashing:
+		dash_timer -= delta
+		velocity.x = dash_direction * SLASH_DASH_SPEED
+
+		if dash_timer <= 0.0:
+			is_dashing = false
+			velocity.x = 0
+
+		move_and_slide()
+		return
+	
 	# Handle knockback (no gravity)
 	if is_knockback:
 		velocity.x = knockback_velocity.x
@@ -268,6 +314,7 @@ func _physics_process(delta):
 		if knockback_velocity.length() < 50:
 			is_knockback = false
 			knockback_velocity = Vector2.ZERO
+		pass
 	else:
 		handle_boss_behavior(delta)
 	

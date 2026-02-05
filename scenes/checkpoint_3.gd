@@ -13,7 +13,7 @@ func _ready():
 
 func _on_body_entered(body):
 	if body.is_in_group("player"):
-		print("Checkpoint触发! Index:", checkpoint_index, "Position:", collision_shape.global_position)
+		print("Checkpoint! Index:", checkpoint_index, "Position:", collision_shape.global_position)
 		
 		var checkpoints = get_tree().current_scene.get_node("Checkpoints")
 		if checkpoints:
