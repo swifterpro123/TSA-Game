@@ -24,7 +24,7 @@ func _on_body_entered(body):
 		body.call_deferred("set", "global_position", TARGET_POS)
 		body.call_deferred("set", "velocity", Vector2.ZERO)
 		
-		get_tree().root.get_node("Bgmusic").play_tutorial_music()
+		get_tree().root.get_node("Bgmusic").play_preboss_music()
 		tut_bg.visible = false
 		sky_bg.visible = false
 		volcano_bg.visible = true
