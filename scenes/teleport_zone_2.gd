@@ -1,11 +1,12 @@
 extends Area2D
 
 @export var checkpoint_index := 2
-const TARGET_POS := Vector2(27931.0, -130.0)
+const TARGET_POS := Vector2(23000.0, -165.0)
 @onready var sky_bg: Node2D = $"../../SkyBG"
 @onready var tut_bg: Node2D = $"../../TutBG"
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var volcano_bg: Node2D = $"../../VolcanoBG"
+@onready var forest_bg: Node2D = $"../../ForestBG"
 
 func _ready():
 	body_entered.connect(_on_body_entered)
@@ -24,7 +25,8 @@ func _on_body_entered(body):
 		body.call_deferred("set", "global_position", TARGET_POS)
 		body.call_deferred("set", "velocity", Vector2.ZERO)
 		
-		get_tree().root.get_node("Bgmusic").play_volcano_music()
+		get_tree().root.get_node("Bgmusic").play_actualforest_music()
 		tut_bg.visible = false
 		sky_bg.visible = false
-		volcano_bg.visible = true
+		volcano_bg.visible = false
+		forest_bg.visible = true

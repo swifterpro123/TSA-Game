@@ -1,6 +1,6 @@
 [gd_scene load_steps=49 format=3 uid="uid://clvbv5hdc7dtj"]
 
-[ext_resource type="Script" uid="uid://c0hkrtdybtc5p" path="res://boss.gd" id="1_r3bxh"]
+[ext_resource type="Script" uid="uid://c0hkrtdybtc5p" path="res://scripts/boss.gd" id="1_r3bxh"]
 [ext_resource type="PackedScene" uid="uid://cnqvoo4ls5t4i" path="res://scenes/dog_projectile.tscn" id="2_2cdgk"]
 [ext_resource type="PackedScene" uid="uid://6ntvenc6adsr" path="res://scenes/SlashEffect.tscn" id="3_qsl3t"]
 [ext_resource type="Texture2D" uid="uid://lv5uoij3eclc" path="res://sprites/bossbeam.png" id="4_2cdgk"]

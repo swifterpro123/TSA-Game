@@ -8,6 +8,7 @@ extends Node2D
 @onready var end_music: AudioStreamPlayer = $EndMusic
 @onready var volcano: AudioStreamPlayer = $Volcano
 @onready var pre_boss: AudioStreamPlayer = $PreBoss
+@onready var actual_forest: AudioStreamPlayer = $ActualForest
 
 func _ready():
 	menu.play()
@@ -18,6 +19,7 @@ func _ready():
 	end_music.stop()
 	volcano.stop()
 	pre_boss.stop()
+	actual_forest.stop()
 
 func play_tutorial_music():
 	menu.stop()
@@ -28,6 +30,7 @@ func play_tutorial_music():
 	end_music.stop()
 	volcano.stop()
 	pre_boss.stop()
+	actual_forest.stop()
 
 func play_menu_music():
 	tutorial.stop()
@@ -38,6 +41,7 @@ func play_menu_music():
 	end_music.stop()
 	volcano.stop()
 	pre_boss.stop()
+	actual_forest.stop()
 	
 func play_volcano_music():
 	tutorial.stop()
@@ -48,6 +52,18 @@ func play_volcano_music():
 	end_music.stop()
 	volcano.play()
 	pre_boss.stop()
+	actual_forest.stop()
+	
+func play_actualforest_music():
+	menu.stop()
+	forest.stop()
+	tutorial.stop()
+	death.stop()
+	bossfight.stop()
+	end_music.stop()
+	volcano.stop()
+	pre_boss.stop()
+	actual_forest.play()
 
 func play_forest_music():
 	menu.stop()
@@ -58,6 +74,7 @@ func play_forest_music():
 	end_music.stop()
 	volcano.stop()
 	pre_boss.stop()
+	actual_forest.stop()
 	
 func play_death_music():
 	menu.stop()
@@ -68,6 +85,7 @@ func play_death_music():
 	end_music.stop()
 	volcano.stop()
 	pre_boss.stop()
+	actual_forest.stop()
 	
 func play_boss_music():
 	menu.stop()
@@ -78,6 +96,7 @@ func play_boss_music():
 	end_music.stop()
 	volcano.stop()
 	pre_boss.stop()
+	actual_forest.stop()
 
 func play_preboss_music():
 	menu.stop()
@@ -88,6 +107,7 @@ func play_preboss_music():
 	end_music.stop()
 	volcano.stop()
 	pre_boss.play()
+	actual_forest.stop()
 
 func play_end_music():
 	menu.stop()
@@ -98,6 +118,7 @@ func play_end_music():
 	end_music.play()
 	volcano.stop()
 	pre_boss.stop()
+	actual_forest.stop()
 	
 func stop_all():
 	menu.stop()
@@ -108,3 +129,4 @@ func stop_all():
 	end_music.stop()
 	volcano.stop()
 	pre_boss.stop()
+	actual_forest.stop()

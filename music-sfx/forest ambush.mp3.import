@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c8uxpbxi58wle"
+path="res://.godot/imported/forest ambush.mp3-b09ee7934e82b2c6c096126a040171b6.mp3str"
+
+[deps]
+
+source_file="res://music-sfx/forest ambush.mp3"
+dest_files=["res://.godot/imported/forest ambush.mp3-b09ee7934e82b2c6c096126a040171b6.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
