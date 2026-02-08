@@ -7,6 +7,7 @@ extends Node2D
 @onready var bossfight: AudioStreamPlayer = $Bossfight
 @onready var end_music: AudioStreamPlayer = $EndMusic
 @onready var volcano: AudioStreamPlayer = $Volcano
+@onready var pre_boss: AudioStreamPlayer = $PreBoss
 
 func _ready():
 	menu.play()
@@ -16,6 +17,7 @@ func _ready():
 	bossfight.stop()
 	end_music.stop()
 	volcano.stop()
+	pre_boss.stop()
 
 func play_tutorial_music():
 	menu.stop()
@@ -25,6 +27,7 @@ func play_tutorial_music():
 	bossfight.stop()
 	end_music.stop()
 	volcano.stop()
+	pre_boss.stop()
 
 func play_menu_music():
 	tutorial.stop()
@@ -34,6 +37,7 @@ func play_menu_music():
 	bossfight.stop()
 	end_music.stop()
 	volcano.stop()
+	pre_boss.stop()
 	
 func play_volcano_music():
 	tutorial.stop()
@@ -43,6 +47,7 @@ func play_volcano_music():
 	bossfight.stop()
 	end_music.stop()
 	volcano.play()
+	pre_boss.stop()
 
 func play_forest_music():
 	menu.stop()
@@ -52,6 +57,7 @@ func play_forest_music():
 	bossfight.stop()
 	end_music.stop()
 	volcano.stop()
+	pre_boss.stop()
 	
 func play_death_music():
 	menu.stop()
@@ -61,6 +67,7 @@ func play_death_music():
 	bossfight.stop()
 	end_music.stop()
 	volcano.stop()
+	pre_boss.stop()
 	
 func play_boss_music():
 	menu.stop()
@@ -70,7 +77,18 @@ func play_boss_music():
 	bossfight.play()
 	end_music.stop()
 	volcano.stop()
-	
+	pre_boss.stop()
+
+func play_preboss_music():
+	menu.stop()
+	tutorial.stop()
+	forest.stop()
+	death.stop()
+	bossfight.stop()
+	end_music.stop()
+	volcano.stop()
+	pre_boss.play()
+
 func play_end_music():
 	menu.stop()
 	tutorial.stop()
@@ -79,6 +97,7 @@ func play_end_music():
 	bossfight.stop()
 	end_music.play()
 	volcano.stop()
+	pre_boss.stop()
 	
 func stop_all():
 	menu.stop()
@@ -88,3 +107,4 @@ func stop_all():
 	bossfight.stop()
 	end_music.stop()
 	volcano.stop()
+	pre_boss.stop()

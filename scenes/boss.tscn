@@ -293,10 +293,10 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5w2ut"]
-size = Vector2(179.5, 175.875)
+size = Vector2(245.1875, 224.23438)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_es0rk"]
-size = Vector2(212, 200.5)
+size = Vector2(300.25, 270.5625)
 
 [node name="Boss" type="CharacterBody2D"]
 collision_layer = 4
@@ -313,7 +313,7 @@ animation = &"slash"
 autoplay = "walk"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-5, 18)
+position = Vector2(-6, 16)
 shape = SubResource("RectangleShape2D_5w2ut")
 
 [node name="DirectionTimer" type="Timer" parent="."]
@@ -324,7 +324,7 @@ autostart = true
 collision_layer = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2(-5, 17)
+position = Vector2(-4, 17)
 shape = SubResource("RectangleShape2D_es0rk")
 
 [node name="ProjectileBlast" type="AudioStreamPlayer2D" parent="."]

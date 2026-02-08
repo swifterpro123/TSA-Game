@@ -6,30 +6,32 @@ extends CharacterBody2D
 @onready var boss_bar_fill: ColorRect = $"../../CanvasLayer/BossBar/ColorRect"
 @onready var end_screen: TextureRect = $"../../CanvasLayer/EndScreen"
 
-const SPEED := 80.0  # Boss moves slower
+const SPEED := 80.0
 const SLASH_COOLDOWN := 2.0
 const SLASH_DELAY := 1.0
 const ORB_COOLDOWN := 3.0
-const ORB_DELAY := 1.0  # Animation delay before shooting orb
+const ORB_DELAY := 1.0
 
 const SLASH_DASH_SPEED := 260.0
 const SLASH_DASH_TIME := 0.15
+const PLAYER_KNOCKBACK := 2500.0
 
 var is_dashing := false
 var dash_timer := 0.0
 var dash_direction := 0
 
-const MAX_HEALTH := 1250
+const MAX_HEALTH := 1500
 var health := MAX_HEALTH
 var dead := false
+var player_is_dead := false  # New flag to track if player is dead
 
-var detection_range := 300.0  # Range to detect player
-var slash_range := 120.0  # Range for melee slash
-var orb_range := 300.0  # Range for orb attack
+var detection_range := 300.0
+var slash_range := 175.0
+var orb_range := 300.0
 
 var player: Node2D
 var player_detected := false
-var boss_music_started := false  # Track if music has started
+var boss_music_started := false
 
 var flash_timer := 0.0
 var flash_duration := 0.5
@@ -74,7 +76,7 @@ func _ready():
 	slash_timer.timeout.connect(func(): can_slash = true)
 	add_child(slash_timer)
 	
-	#Setup slash delay
+	# Setup slash delay
 	slash_delay_timer.wait_time = SLASH_DELAY
 	slash_delay_timer.one_shot = true
 	slash_delay_timer.timeout.connect(_enable_slash_hitbox)
@@ -95,40 +97,42 @@ func _ready():
 	# Connect animation finished
 	sprite.animation_finished.connect(_on_animation_finished)
 	
-	# Connect to player respawn
+	# Connect to player signals
 	if player:
-		player.connect("lives_changed", _on_player_lives_changed)
+		player.connect("player_died", _on_player_died)
+		player.connect("player_respawned", _on_player_respawned)
 
-func _on_player_lives_changed(lives):
-	# When player dies (lives hits 0), stop targeting
-	if lives == 0:
-		player_detected = false
-		boss_music_started = false
-		is_attacking = false
-		is_slashing = false
-		hitbox.set_deferred("monitoring", false)
-		velocity.x = 0
-		sprite.play("walk")
-		boss_bar.visible = false
+func _on_player_died():
+	# Completely stop boss when player dies
+	player_is_dead = true
+	player_detected = false
+	boss_music_started = false
+	is_attacking = false
+	is_slashing = false
+	is_dashing = false
+	set_deferred("monitoring", false)
+	velocity.x = 0
+	sprite.play("walk")
+	boss_bar.visible = false
 	
-	# Reset boss health when player respawns (lives becomes MAX_LIVES)
-	if lives == 5:  # Assuming MAX_LIVES is 5
-		health = MAX_HEALTH
-		dead = false
-		player_detected = false
-		boss_music_started = false
-		is_attacking = false
-		is_slashing = false
-		sprite.play("walk")
-		boss_bar.visible = false
-		update_boss_bar()
+	# Stop all timers
+	slash_timer.stop()
+	slash_delay_timer.stop()
+	orb_timer.stop()
+	orb_delay_timer.stop()
+
+func _on_player_respawned():
+	# Allow boss to be re-engaged after respawn
+	player_is_dead = false
+	health = MAX_HEALTH
+	update_boss_bar()
 
 func update_boss_bar():
 	var health_percent = float(health) / float(MAX_HEALTH)
 	boss_bar_fill.size.x = initial_bar_width * health_percent
 
 func take_damage(amount: int) -> void:
-	if dead:
+	if dead or player_is_dead:  # Don't take damage if player is dead
 		return
 	health -= amount
 	health = max(health, 0)
@@ -137,10 +141,9 @@ func take_damage(amount: int) -> void:
 	if health <= 0:
 		die()
 
-func apply_knockback(direction: Vector2, force: float) -> void:
-	# Boss has reduced knockback
-	is_knockback = true
-	knockback_velocity = direction * (force * 0.3)  # 30% knockback
+func apply_knockback(_direction: Vector2, _force: float) -> void:
+	# Boss ignores knockback completely
+	pass
 
 func die():
 	dead = true
@@ -155,10 +158,16 @@ func flash_red():
 	sprite.modulate = Color(1, 0, 0, 1)
 
 func _on_hitbox_body_entered(body):
-	if not can_slash or not is_slashing:
+	if not can_slash or not is_slashing or player_is_dead:  # Don't attack if player is dead
 		return
 	if body.is_in_group("player"):
-		body.take_damage(1)  # Boss does more damage
+		body.take_damage(1)
+		
+		# Apply knockback to player
+		var knockback_dir = (body.global_position - global_position).normalized()
+		body.is_knockback = true
+		body.knockback_velocity = knockback_dir * PLAYER_KNOCKBACK
+		
 		spawn_slash_effect()
 		can_slash = false
 		slash_timer.start()
@@ -168,7 +177,7 @@ func spawn_slash_effect():
 		return
 	var slash = slash_scene.instantiate()
 	get_parent().add_child(slash)
-	var offset := Vector2(40, 0)  # Bigger offset for boss
+	var offset := Vector2(40, 0)
 	if sprite.flip_h:
 		offset.x = -offset.x
 		slash.scale.x = -1
@@ -179,12 +188,12 @@ func _on_animation_finished():
 		is_slashing = false
 		is_attacking = false
 		is_dashing = false
-		hitbox.monitoring = false  # Disable hitbox after slash
+		hitbox.monitoring = false
 	elif sprite.animation == "orb":
 		is_attacking = false
 
 func slash_attack():
-	if not can_slash or is_attacking:
+	if not can_slash or is_attacking or player_is_dead:  # Don't attack if player is dead
 		return
 
 	is_attacking = true
@@ -199,20 +208,17 @@ func slash_attack():
 	if not sprite.flip_h:
 		dash_direction = -1
 
-	is_dashing = true
-	dash_timer = SLASH_DASH_TIME
-
 	# Delay hitbox activation
 	hitbox.monitoring = false
 	slash_delay_timer.start()
 	
 func _enable_slash_hitbox():
-	if dead or not is_slashing:
+	if dead or not is_slashing or player_is_dead:  # Don't enable if player is dead
 		return
 	hitbox.monitoring = true
 
 func orb_attack():
-	if not can_shoot_orb or is_attacking or projectile_scene == null:
+	if not can_shoot_orb or is_attacking or projectile_scene == null or player_is_dead:  # Don't attack if player is dead
 		return
 	
 	is_attacking = true
@@ -222,7 +228,7 @@ func orb_attack():
 	orb_delay_timer.start()
 
 func _spawn_orb():
-	if projectile_scene == null:
+	if projectile_scene == null or player_is_dead:  # Don't spawn if player is dead
 		return
 	
 	var projectile = projectile_scene.instantiate()
@@ -235,7 +241,9 @@ func _spawn_orb():
 		projectile.set_direction(direction)
 
 func handle_boss_behavior(delta: float):
-	if player == null:
+	if player == null or player_is_dead:  # Stop behavior if player is dead
+		sprite.play("walk")
+		velocity.x = 0
 		return
 	
 	var distance := global_position.distance_to(player.global_position)
@@ -265,21 +273,17 @@ func handle_boss_behavior(delta: float):
 	# Choose attack based on distance
 	if not is_attacking:
 		if distance <= slash_range:
-			# Close range - slash attack
 			slash_attack()
 			velocity.x = 0
 		elif distance <= orb_range:
-			# Medium range - orb attack
 			orb_attack()
 			velocity.x = 0
 		else:
-			# Move towards player if too far
 			var direction_to_player := (player.global_position - global_position).normalized()
 			velocity.x = lerp(velocity.x, direction_to_player.x * SPEED, delta * smoothing)
 			if not is_attacking:
 				sprite.play("walk")
 	else:
-		# Don't move while attacking
 		velocity.x = lerp(velocity.x, 0.0, delta * smoothing)
 
 func _physics_process(delta):
@@ -291,7 +295,7 @@ func _physics_process(delta):
 		else:
 			sprite.modulate = sprite.modulate.lerp(original_modulate, delta * 5.0)
 	
-	if dead:
+	if dead or player_is_dead:  # Stop all movement if player is dead
 		velocity = Vector2.ZERO
 		move_and_slide()
 		return
@@ -307,15 +311,10 @@ func _physics_process(delta):
 		move_and_slide()
 		return
 	
-	# Handle knockback (no gravity)
 	if is_knockback:
-		velocity.x = knockback_velocity.x
-		knockback_velocity = knockback_velocity.lerp(Vector2.ZERO, delta * 8.0)
-		if knockback_velocity.length() < 50:
-			is_knockback = false
-			knockback_velocity = Vector2.ZERO
-		pass
-	else:
-		handle_boss_behavior(delta)
+		is_knockback = false
+		knockback_velocity = Vector2.ZERO
+	
+	handle_boss_behavior(delta)
 	
 	move_and_slide()
