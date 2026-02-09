@@ -1,36 +1,26 @@
 extends CharacterBody2D
-
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var hitbox: Area2D = $Hitbox
 @onready var projectile_blast: AudioStreamPlayer2D = $ProjectileBlast
-
 const SHOOT_COOLDOWN := 3.0
 const SHOOT_ANIMATION_TIME := 1.0
 const BEAM_SPAWN_DELAY := 1.0
 const BEAM_PHYSICS_DELAY := 0.5
-
 var dead := false
 var health := 100
 var shoot_range := 400.0
-
 var player: Node2D
-
 var flash_timer := 0.0
 var flash_duration := 0.5
 var flashing := false
 var original_modulate := Color(1, 1, 1, 1)
-
 var can_shoot := true
 var is_attacking := false
-
-var is_knockback := false  # Added knockback support
-var knockback_velocity := Vector2.ZERO  # Added knockback support
-
+var is_knockback := false
+var knockback_velocity := Vector2.ZERO
 @export var projectile_scene: PackedScene
-
 @onready var shoot_timer: Timer = Timer.new()
 @onready var beam_spawn_timer: Timer = Timer.new()
-
 func _ready():
 	add_to_group("enemies")
 	player = get_tree().get_first_node_in_group("player")
@@ -51,7 +41,6 @@ func _ready():
 	if sprite:
 		sprite.animation_finished.connect(_on_animation_finished)
 		sprite.play("idle")
-
 func take_damage(amount: int) -> void:
 	if dead:
 		return
@@ -59,29 +48,22 @@ func take_damage(amount: int) -> void:
 	flash_red()
 	if health <= 0:
 		die()
-
 func apply_knockback(direction: Vector2, force: float) -> void:
-	# Added this function so player can attack the pyro
 	is_knockback = true
 	knockback_velocity = direction * force
-
 func die():
 	dead = true
 	queue_free()
-
 func flash_red():
 	flash_timer = flash_duration
 	flashing = true
 	sprite.modulate = Color(1, 0, 0, 1)
-
 func _on_hitbox_body_entered(_body):
 	pass
-
 func _on_animation_finished():
 	if sprite.animation == "attack":
 		is_attacking = false
 		sprite.play("idle")
-
 func shoot_projectile():
 	if projectile_scene == null:
 		return
@@ -91,12 +73,14 @@ func shoot_projectile():
 	shoot_timer.start()
 	
 	sprite.play("attack")
+	# Removed sound effect from here
+	
+	beam_spawn_timer.start()
+func _spawn_projectile():
+	# Play sound effect when beam spawns
 	if projectile_blast:
 		projectile_blast.play()
 	
-	beam_spawn_timer.start()
-
-func _spawn_projectile():
 	var projectile = projectile_scene.instantiate()
 	get_parent().add_child(projectile)
 	projectile.global_position = global_position
@@ -104,14 +88,12 @@ func _spawn_projectile():
 	var direction = Vector2.RIGHT if not sprite.flip_h else Vector2.LEFT
 	projectile.set_direction(direction)
 	projectile.start_with_delay(BEAM_PHYSICS_DELAY)
-
 func update_animation():
 	if is_attacking:
 		return
 	
 	if sprite.animation != "idle":
 		sprite.play("idle")
-
 func _physics_process(delta):
 	if flashing:
 		flash_timer -= delta

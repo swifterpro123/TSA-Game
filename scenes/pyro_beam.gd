@@ -4,7 +4,7 @@ extends Area2D
 
 var speed := 200.0
 var direction := Vector2.RIGHT
-var damage := 2
+var damage := 1
 
 var is_active := false
 var activation_timer := 0.0

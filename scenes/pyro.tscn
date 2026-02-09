@@ -151,4 +151,4 @@ shape = SubResource("RectangleShape2D_uc0ug")
 position = Vector2(-1, 20)
 scale = Vector2(0.14474997, 0.14474997)
 stream = ExtResource("5_o40gm")
-volume_db = 24.0
+volume_db = -5.349
