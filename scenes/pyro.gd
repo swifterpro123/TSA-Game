@@ -23,6 +23,9 @@ var original_modulate := Color(1, 1, 1, 1)
 var can_shoot := true
 var is_attacking := false
 
+var is_knockback := false  # Added knockback support
+var knockback_velocity := Vector2.ZERO  # Added knockback support
+
 @export var projectile_scene: PackedScene
 
 @onready var shoot_timer: Timer = Timer.new()
@@ -56,6 +59,11 @@ func take_damage(amount: int) -> void:
 	flash_red()
 	if health <= 0:
 		die()
+
+func apply_knockback(direction: Vector2, force: float) -> void:
+	# Added this function so player can attack the pyro
+	is_knockback = true
+	knockback_velocity = direction * force
 
 func die():
 	dead = true
@@ -114,7 +122,24 @@ func _physics_process(delta):
 			sprite.modulate = sprite.modulate.lerp(original_modulate, delta * 5.0)
 	
 	if dead:
+		velocity = Vector2.ZERO
+		move_and_slide()
 		return
+	
+	# Apply gravity
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+	
+	# Handle knockback
+	if is_knockback:
+		velocity.x = knockback_velocity.x
+		velocity.y = knockback_velocity.y
+		knockback_velocity = knockback_velocity.lerp(Vector2.ZERO, delta * 8.0)
+		if knockback_velocity.length() < 50:
+			is_knockback = false
+			knockback_velocity = Vector2.ZERO
+	else:
+		velocity.x = 0  # Pyro doesn't move on its own
 	
 	if player != null:
 		var distance := global_position.distance_to(player.global_position)
@@ -129,3 +154,4 @@ func _physics_process(delta):
 			shoot_projectile()
 	
 	update_animation()
+	move_and_slide()

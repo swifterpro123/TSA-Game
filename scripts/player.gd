@@ -22,6 +22,8 @@ const CHECKPOINT_SPAWN_OFFSET := Vector2(0, -32)
 @onready var sky_bg: Node2D = $"../SkyBG"
 @onready var tut_bg: Node2D = $"../TutBG"
 @onready var death_screen: TextureRect = $"../CanvasLayer/DeathScreen"
+@onready var volcano_bg: Node2D = $"../VolcanoBG"
+@onready var forest_bg: Node2D = $"../ForestBG"
 
 
 # =====================
@@ -140,6 +142,20 @@ func _do_respawn() -> void:
 		sky_bg.visible = true
 		tut_bg.visible = false
 		get_tree().root.get_node("Bgmusic").play_tutorial_music()
+	elif last_checkpoint_pos == Vector2(31579.0, -210.0):
+		sky_bg.visible = false
+		tut_bg.visible = false
+		forest_bg.visible = true
+		volcano_bg.visible = false
+		get_tree().root.get_node("Bgmusic").play_actualforest_music()
+	elif last_checkpoint_pos == Vector2(44065.0, -209.0):
+		sky_bg.visible = false
+		tut_bg.visible = false
+		forest_bg.visible = false
+		volcano_bg.visible = true
+		get_tree().root.get_node("Bgmusic").play_preboss_music()
+	
+
 
 
 # =====================
