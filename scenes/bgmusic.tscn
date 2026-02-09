@@ -17,12 +17,15 @@ script = ExtResource("1_pbe2m")
 [node name="Forest" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_pbe2m")
 volume_db = -12.86
+parameters/looping = true
 
 [node name="Tutorial" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_usvw6")
+parameters/looping = true
 
 [node name="Menu" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_pbe2m")
+parameters/looping = true
 
 [node name="Death" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_s7gy4")
@@ -30,9 +33,11 @@ stream = ExtResource("5_s7gy4")
 [node name="Volcano" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_65ksg")
 volume_db = -16.875
+parameters/looping = true
 
 [node name="Bossfight" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("7_4lubm")
+parameters/looping = true
 
 [node name="EndMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("8_bi025")
@@ -41,7 +46,9 @@ volume_db = -3.817
 [node name="PreBoss" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("9_xrt35")
 volume_db = -21.946
+parameters/looping = true
 
 [node name="ActualForest" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("10_jhufd")
 volume_db = -5.995
+parameters/looping = true
