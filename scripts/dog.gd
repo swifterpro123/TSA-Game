@@ -8,7 +8,7 @@ extends CharacterBody2D
 const SPEED := 120.0
 const ROAM_SPEED := 60.0
 const SHOOT_COOLDOWN := 3.0
-const SHOOT_DELAY := 1  # Delay before actually shooting
+const SHOOT_DELAY := 1  # delay before actually shooting
 
 var chase := false
 var roaming := true
@@ -43,20 +43,16 @@ var knockback_velocity := Vector2.ZERO
 func _ready():
 	add_to_group("enemies")
 	player = get_tree().get_first_node_in_group("player")
-	
-	# Setup shoot cooldown timer
+
 	shoot_timer.wait_time = SHOOT_COOLDOWN
 	shoot_timer.one_shot = true
 	shoot_timer.timeout.connect(func(): can_shoot = true)
 	add_child(shoot_timer)
-	
-	# Setup shoot delay timer (for animation)
 	shoot_delay_timer.wait_time = SHOOT_DELAY
 	shoot_delay_timer.one_shot = true
 	shoot_delay_timer.timeout.connect(_spawn_projectile)
 	add_child(shoot_delay_timer)
 	
-	# Connect to animation finished
 	sprite.animation_finished.connect(_on_animation_finished)
 
 func take_damage(amount: int) -> void:
@@ -90,17 +86,13 @@ func _on_animation_finished():
 func shoot_projectile():
 	if projectile_scene == null:
 		return
-	
 	can_shoot = false
 	is_attacking = true
 	shoot_timer.start()
 	
-	# Play attack animation
 	sprite.play("attack")
 	projectile_blast.play()
 	
-	
-	# Start delay timer to spawn projectile after 0.5 seconds
 	shoot_delay_timer.start()
 
 func _spawn_projectile():
@@ -108,7 +100,6 @@ func _spawn_projectile():
 	get_parent().add_child(projectile)
 	projectile.global_position = global_position
 	
-	# Shoot towards player
 	var direction = (player.global_position - global_position).normalized()
 	projectile.set_direction(direction)
 
@@ -121,11 +112,11 @@ func handle_chase(delta: float):
 		chase = true
 		roaming = false
 		
-		# Shoot if in range and not currently attacking (removed stop_distance check)
-		if distance <= shoot_range and can_shoot and not is_attacking:  # Removed: and distance > stop_distance
+		# shoot if in range and not currently attacking (removed stop_distance check)
+		if distance <= shoot_range and can_shoot and not is_attacking:
 			shoot_projectile()
 		
-		# Don't move while attacking
+		# don't move while attacking
 		if not is_attacking:
 			if distance > stop_distance:
 				var direction_to_player := (player.global_position - global_position).normalized()
@@ -155,11 +146,11 @@ func _physics_process(delta):
 		move_and_slide()
 		return
 	
-	# Apply gravity
+	# gravity
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	
-	# Handle knockback
+	# kb
 	if is_knockback:
 		velocity.x = knockback_velocity.x
 		velocity.y = knockback_velocity.y
@@ -170,7 +161,7 @@ func _physics_process(delta):
 	else:
 		handle_chase(delta)
 	
-	# Flip sprite based on movement direction (only when not attacking)
+	# flip sprite
 	if not is_attacking:
 		if velocity.x < 0:
 			sprite.flip_h = false

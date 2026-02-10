@@ -13,9 +13,9 @@ func _physics_process(delta):
 func _on_body_entered(body):
 	if body.is_in_group("player"):
 		body.take_damage(damage)
-		queue_free()  # Destroy projectile after hit
+		queue_free()  # destroy projectile after hit
 	elif body is TileMap or body is StaticBody2D:
-		queue_free()  # Destroy if hits wall
+		queue_free()  # destroy if hits wall
 
 func set_direction(dir: Vector2):
 	direction = dir.normalized()

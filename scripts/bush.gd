@@ -6,16 +6,16 @@ extends CharacterBody2D
 
 const SPEED := 120.0
 const ROAM_SPEED := 60.0
-const WAKEUP_RANGE := 150.0  # Range to detect player and wake up
-const DEACTIVATE_RANGE := 250.0  # Range to go back to dormant
-const ATTACK_DELAY := 0.5  # Delay before attack hitbox activates
+const WAKEUP_RANGE := 150.0
+const DEACTIVATE_RANGE := 250.0
+const ATTACK_DELAY := 0.5
 
 var chase := false
 var roaming := false
 var dead := false
-var awake := false  # New: track if bush has woken up
-var is_waking := false  # New: track if currently playing wakeup animation
-var is_attacking := false  # Track if currently attacking
+var awake := false
+var is_waking := false
+var is_attacking := false
 
 var health := 80
 var chase_range := 200.0
@@ -46,25 +46,22 @@ func _ready():
 	player = get_tree().get_first_node_in_group("player")
 	hitbox.body_entered.connect(_on_hitbox_body_entered)
 	
-	# Setup attack cooldown timer
+	# attack cd
 	attack_timer.wait_time = ATTACK_COOLDOWN
 	attack_timer.one_shot = true
 	attack_timer.timeout.connect(_on_attack_cooldown_timeout)
 	add_child(attack_timer)
 	
-	# Setup attack delay timer
+	# attack delay
 	attack_delay_timer.wait_time = ATTACK_DELAY
 	attack_delay_timer.one_shot = true
 	attack_delay_timer.timeout.connect(_activate_attack_hitbox)
 	add_child(attack_delay_timer)
-	
-	# Connect animation finished
+
 	sprite.animation_finished.connect(_on_animation_finished)
 	
-	# Disable hitbox initially
 	hitbox.monitoring = false
 	
-	# Start as dormant bush
 	sprite.play("idle")  # Assuming "idle" is the dormant bush animation
 
 func _on_animation_finished():
@@ -80,7 +77,7 @@ func take_damage(amount: int) -> void:
 	if dead:
 		return
 	
-	# Wake up if hit while dormant
+	# wake up if hit while dormant
 	if not awake and not is_waking:
 		wake_up()
 	
@@ -107,7 +104,7 @@ func go_dormant():
 	attack_delay_timer.stop()
 
 func apply_knockback(direction: Vector2, force: float) -> void:
-	if not awake:  # Don't knockback if not awake yet
+	if not awake:  # no kb when not awake
 		return
 	is_knockback = true
 	knockback_velocity = direction * force
@@ -122,7 +119,7 @@ func flash_red():
 	sprite.modulate = Color(1, 0, 0, 1)
 
 func _on_hitbox_body_entered(body):
-	if not can_attack or not awake or not is_attacking:  # Only attack if awake and attacking
+	if not can_attack or not awake or not is_attacking:
 		return
 	if body.is_in_group("player"):
 		body.take_damage(1)
@@ -156,7 +153,6 @@ func start_attack():
 	is_attacking = true
 	sprite.play("attack")
 	
-	# Disable hitbox initially, enable after delay
 	hitbox.monitoring = false
 	attack_delay_timer.start()
 
@@ -166,16 +162,16 @@ func check_for_player():
 	
 	var distance := global_position.distance_to(player.global_position)
 	
-	# Wake up if player is close
+	# wake up if player is close
 	if not awake and not is_waking and distance <= WAKEUP_RANGE:
 		wake_up()
 	
-	# Go dormant if player is far away
+	# deactivate when player is far
 	if awake and distance > DEACTIVATE_RANGE:
 		go_dormant()
 
 func handle_chase(delta: float):
-	if player == null or not awake:  # Only chase if awake
+	if player == null or not awake:  # only chase if awake
 		return
 	
 	var distance := global_position.distance_to(player.global_position)
@@ -188,7 +184,6 @@ func handle_chase(delta: float):
 			velocity.x = lerp(velocity.x, desired_velocity.x, delta * smoothing)
 		else:
 			velocity.x = lerp(velocity.x, 0.0, delta * smoothing)
-			# Try to attack if close enough
 			if can_attack and not is_attacking:
 				start_attack()
 	else:
@@ -210,25 +205,24 @@ func _physics_process(delta):
 		move_and_slide()
 		return
 	
-	# Apply gravity
+	# gravity
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	
-	# Check if player is nearby
+	# check if player is nearby
 	check_for_player()
 	
-	# Stay still when dormant or waking up
+	# stay still when dormant or waking up
 	if not awake and not is_waking:
 		move_and_slide()
 		return
 	
-	# Don't move while waking up or attacking
 	if is_waking or is_attacking:
 		velocity.x = 0
 		move_and_slide()
 		return
 	
-	# Handle knockback
+	# kb
 	if is_knockback:
 		velocity.x = knockback_velocity.x
 		velocity.y = knockback_velocity.y
@@ -239,11 +233,10 @@ func _physics_process(delta):
 	else:
 		handle_chase(delta)
 	
-	# Animation and sprite flipping (only when awake and not attacking)
+	# animation and sprite flipping
 	if awake and sprite.animation != "attack" and sprite.animation != "wakeup":
 		if abs(velocity.x) > 10:
 			sprite.play("walk")
-			# Flip sprite based on movement direction
 			if velocity.x < 0:
 				sprite.flip_h = true
 			elif velocity.x > 0:
@@ -254,5 +247,5 @@ func _physics_process(delta):
 	move_and_slide()
 
 func _on_direction_timer_timeout():
-	if roaming and not chase and awake:  # Only change direction if awake
+	if roaming and not chase and awake:  # only change direction if awake
 		dir = -dir

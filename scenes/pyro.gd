@@ -73,11 +73,9 @@ func shoot_projectile():
 	shoot_timer.start()
 	
 	sprite.play("attack")
-	# Removed sound effect from here
 	
 	beam_spawn_timer.start()
 func _spawn_projectile():
-	# Play sound effect when beam spawns
 	if projectile_blast:
 		projectile_blast.play()
 	
@@ -108,11 +106,11 @@ func _physics_process(delta):
 		move_and_slide()
 		return
 	
-	# Apply gravity
+	# gravity
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	
-	# Handle knockback
+	# kb
 	if is_knockback:
 		velocity.x = knockback_velocity.x
 		velocity.y = knockback_velocity.y
@@ -121,7 +119,7 @@ func _physics_process(delta):
 			is_knockback = false
 			knockback_velocity = Vector2.ZERO
 	else:
-		velocity.x = 0  # Pyro doesn't move on its own
+		velocity.x = 0 
 	
 	if player != null:
 		var distance := global_position.distance_to(player.global_position)

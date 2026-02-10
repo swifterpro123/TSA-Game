@@ -309,8 +309,10 @@ slash_scene = ExtResource("3_qsl3t")
 position = Vector2(-7.935004, 17.065004)
 scale = Vector2(0.5663958, 0.58306247)
 sprite_frames = SubResource("SpriteFrames_f3xpi")
-animation = &"slash"
+animation = &"orb"
 autoplay = "walk"
+frame = 19
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(-6, 16)
